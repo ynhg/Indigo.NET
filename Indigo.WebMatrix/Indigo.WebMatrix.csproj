@@ -47,10 +47,18 @@
     <Reference Include="Common.Logging.Log4Net">
       <HintPath>..\packages\Common.Logging.Log4Net.2.0.1\lib\net20\Common.Logging.Log4Net.dll</HintPath>
     </Reference>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Iesi.Collections.3.2.0.1001\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NHibernate.3.3.4.4000\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="Quartz, Version=2.2.4.400, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Quartz.2.2.4\lib\net40\Quartz.dll</HintPath>
@@ -64,6 +72,10 @@
     <Reference Include="Spring.Data, Version=2.0.0.40000, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Spring.Data.2.0.0-RC1\lib\net40\Spring.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Data.NHibernate33, Version=2.0.0.40000, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Spring.Data.NHibernate33.2.0.0-RC1\lib\net40\Spring.Data.NHibernate33.dll</HintPath>
     </Reference>
     <Reference Include="Spring.Scheduling.Quartz2">
       <HintPath>..\packages\Spring.Scheduling.Quartz2.2.0.0-RC1\lib\net40\Spring.Scheduling.Quartz2.dll</HintPath>
@@ -149,12 +161,15 @@
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PositionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DepartmentModels\AddModel.cs" />
+    <Compile Include="Models\EmployeeModels\AddModel.cs" />
+    <Compile Include="Models\PositionModels\AddModel.cs" />
     <Compile Include="Models\RoleModels\AddModel.cs" />
     <Compile Include="Models\RoleModels\ChangePermissionsModel.cs" />
     <Compile Include="Models\RoleModels\EditModel.cs" />
@@ -173,6 +188,7 @@
     <EmbeddedResource Include="Config\indigo-core.xml" />
     <EmbeddedResource Include="Config\indigo-webmatrix.xml" />
     <Content Include="Global.asax" />
+    <None Include="Properties\PublishProfiles\microservices.cn.pubxml" />
     <None Include="static\base\admin.js.bak" />
     <Content Include="static\base\admin.js" />
     <None Include="static\base\css\admin.css.bak" />
@@ -559,6 +575,8 @@
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
     <Content Include="Views\Employee\Add.cshtml" />
+    <Content Include="Views\Position\Add.cshtml" />
+    <Content Include="Views\Position\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

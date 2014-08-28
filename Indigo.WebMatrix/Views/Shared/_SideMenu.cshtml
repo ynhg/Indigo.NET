@@ -15,6 +15,10 @@
             {
                 <li><a href="@Url.Action("Index", "Department")"><i class="fa fa-angle-double-right"></i> 部门管理</a></li>
             }
+            @if (User.IsPermitted("Index", "Position"))
+            {
+                <li><a href="@Url.Action("Index", "Position")"><i class="fa fa-angle-double-right"></i> 职位管理</a></li>
+            }
             @if (User.IsPermitted("Index", "Employee"))
             {
                 <li><a href="@Url.Action("Index", "Employee")"><i class="fa fa-angle-double-right"></i> 人员管理</a></li>

@@ -6,7 +6,7 @@ namespace Indigo.WebMatrix.Models.RoleModels
     public class AddModel
     {
         [Required]
-        [Remote("IsNameUnique", "Role", ErrorMessage = "{0}已经被使用")]
+        [Remote("IsNameUnique", ErrorMessage = "{0}已经被使用")]
         [Display(Name = "角色名")]
         public string RoleName { get; set; }
 

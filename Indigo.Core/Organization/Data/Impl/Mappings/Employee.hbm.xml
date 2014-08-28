@@ -8,7 +8,7 @@
         </id>
 
         <property name="Name" length="20" not-null="true" />
-        <property name="Number" column="UserNumber" length="20" not-null="true" unique="true" />
+        <property name="Number" length="20" not-null="true" unique="true" />
         <component name="IdentityCard" class="Indigo.Organization.IdentityCard">
             <property name="Number" column="IdentityCard" length="20" />
         </component>

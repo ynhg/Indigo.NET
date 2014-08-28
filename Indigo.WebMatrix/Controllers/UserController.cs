@@ -17,6 +17,12 @@ namespace Indigo.WebMatrix.Controllers
     [Component("用户管理", null, true, 110)]
     public class UserController : BaseController
     {
+        [Autowired]
+        public IMvcModuleService MvcModuleService { get; set; }
+
+        [Autowired]
+        public ISecurityService SecurityService { get; set; }
+
         [Function("注册", "注册新用户", false)]
         public ActionResult SignUp(string returnUrl)
         {
@@ -241,11 +247,5 @@ namespace Indigo.WebMatrix.Controllers
         {
             return Json(User != null, JsonRequestBehavior.AllowGet);
         }
-
-        [Autowired]
-        public IMvcModuleService MvcModuleService { get; set; }
-
-        [Autowired]
-        public ISecurityService SecurityService { get; set; }
     }
 }

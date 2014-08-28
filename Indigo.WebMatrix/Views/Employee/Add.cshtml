@@ -1,5 +1,59 @@
-﻿@{
-    ViewBag.Title = "Add";
-}
+﻿@using Indigo.Organization;
+@model Indigo.WebMatrix.Models.EmployeeModels.AddModel
 
-<h2>Add</h2>
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="box">
+            @using (Html.BeginForm("Add", "Employee", FormMethod.Post, new { role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.Number)
+                        @Html.TextBoxFor(m => m.Number, new { @class = "form-control", autofocus = true })
+                        @Html.ValidationMessageFor(m => m.Number)
+                    </div>
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.Name)
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name)
+                    </div>
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.IdentityCardNumber)
+                        @Html.TextBoxFor(m => m.IdentityCardNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.IdentityCardNumber)
+                    </div>
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.Gender)
+                        @Html.DropDownListFor(m => m.Gender, ViewBag.Genders as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Gender)
+                    </div>
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.Birthday)
+                        @Html.TextBoxFor(m => m.Birthday, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Birthday)
+                    </div>
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.Age)
+                        @Html.TextBoxFor(m => m.Age, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Age)
+                    </div>
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.DepartmentId)
+                        @Html.DropDownListFor(m => m.DepartmentId, (IEnumerable<SelectListItem>)ViewBag.Departments, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.DepartmentId)
+                    </div>
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.PositionId)
+                        @Html.DropDownListFor(m => m.PositionId, (IEnumerable<SelectListItem>)ViewBag.Positions, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PositionId)
+                    </div>
+                </div>
+                <div class="box-footer">
+                    @Html.ActionLinkAuthorized("返回", "Index", null, new { @class = "btn btn-default" })
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

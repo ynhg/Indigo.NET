@@ -15,5 +15,10 @@ namespace Indigo.Organization
         public virtual Department SuperDepartment { get; set; }
         public virtual ICollection<Department> SubDepartments { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

@@ -15,7 +15,13 @@ namespace Indigo.Organization
         IList<Department> GetDepartments(User oper);
         Page<Department> Search(DepartmentSearchForm searchForm);
 
-        Employee AddEmployee(Employee employee, Department department, Position position);
+        Position AddPosition(string name, int rank, User oper);
+        Position GetPositionByName(string name);
+        IList<Position> GetPositions();
+        Position GetPositionById(string id);
+        Page<Position> Search(PositionSearchForm searchForm);
+
+        Employee AddEmployee(Employee employee, Department department, Position position, User oper);
         Page<Employee> Search(EmployeeSearchForm searchForm);
     }
 }

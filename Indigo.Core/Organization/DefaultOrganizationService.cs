@@ -12,6 +12,15 @@ namespace Indigo.Organization
     [Service]
     public class DefaultOrganizationService : IOrganizationService
     {
+        [Autowired]
+        public IDepartmentDao DepartmentDao { get; set; }
+
+        [Autowired]
+        public IPositionDao PositionDao { get; set; }
+
+        [Autowired]
+        public IEmployeeDao EmployeeDao { get; set; }
+
         [Transaction]
         public Department AddDepartment(string name, string description, Department superDepartment, int ordinal, User oper)
         {
@@ -63,12 +72,46 @@ namespace Indigo.Organization
         }
 
         [Transaction]
-        public Employee AddEmployee(Employee employee, Department department, Position position)
+        public Position AddPosition(string name, int rank, User oper)
+        {
+            Position position = new Position(name, rank);
+
+            PositionDao.Save(position, oper);
+
+            return position;
+        }
+
+        [Transaction(ReadOnly = true)]
+        public Position GetPositionById(string id)
+        {
+            return PositionDao.GetById(id);
+        }
+
+        [Transaction(ReadOnly = true)]
+        public Position GetPositionByName(string name)
+        {
+            return PositionDao.GetByName(name);
+        }
+
+        [Transaction(ReadOnly = true)]
+        public IList<Position> GetPositions()
+        {
+            return PositionDao.FindAll();
+        }
+
+        [Transaction(ReadOnly = true)]
+        public Page<Position> Search(PositionSearchForm searchForm)
+        {
+            return PositionDao.Search(searchForm);
+        }
+
+        [Transaction]
+        public Employee AddEmployee(Employee employee, Department department, Position position, User oper)
         {
             employee.Department = department;
             employee.Position = position;
 
-            EmployeeDao.Save(employee);
+            EmployeeDao.Save(employee, oper);
 
             return employee;
         }
@@ -78,11 +121,5 @@ namespace Indigo.Organization
         {
             return EmployeeDao.Search(searchForm);
         }
-
-        [Autowired]
-        public IDepartmentDao DepartmentDao { get; set; }
-
-        [Autowired]
-        public IEmployeeDao EmployeeDao { get; set; }
     }
 }

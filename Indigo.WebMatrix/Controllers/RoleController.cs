@@ -12,6 +12,12 @@ namespace Indigo.WebMatrix.Controllers
     [Component("角色管理", null, true, 120)]
     public class RoleController : BaseController
     {
+        [Autowired]
+        public IMvcModuleService MvcModuleService { get; set; }
+
+        [Autowired]
+        public ISecurityService SecurityService { get; set; }
+
         [Function("角色列表", "浏览角色信息")]
         public ActionResult Index(RoleSearchForm searchForm)
         {
@@ -137,11 +143,5 @@ namespace Indigo.WebMatrix.Controllers
 
             return Json(role == null || role.Id == id, JsonRequestBehavior.AllowGet);
         }
-
-        [Autowired]
-        public IMvcModuleService MvcModuleService { get; set; }
-
-        [Autowired]
-        public ISecurityService SecurityService { get; set; }
     }
 }

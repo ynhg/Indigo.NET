@@ -80,7 +80,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\Mvc\BaseController.cs" />
     <Compile Include="Web\Mvc\BaseMvcApplication.cs" />
-    <Compile Include="Web\Mvc\Util\ModuleUtils.cs" />
+    <Compile Include="Web\Mvc\Util\HtmlUtils.cs" />
     <Compile Include="Web\Mvc\Util\SecurityExtensions.cs" />
     <Compile Include="Web\Mvc\ViewPages\BaseViewPage.cs" />
   </ItemGroup>
