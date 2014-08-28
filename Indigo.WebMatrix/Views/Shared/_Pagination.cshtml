@@ -1,0 +1,43 @@
+﻿@using Indigo.Infrastructure.Search;
+@{
+    string SearchFormId = Page.SearchFormId ?? "searchForm";
+    var page = PageData.Values.OfType<IPageable>().FirstOrDefault();
+}
+
+<input type="hidden" id="PageNumber" name="PageNumber" value="@page.PageNumber" />
+<input type="hidden" id="PageSize" name="PageSize" value="@page.PageSize" />
+<ul class="pagination" data-target="#@SearchFormId">
+    @{
+        var num = page.PageNumber - 3;
+
+        if (page.PageNumber + 3 > page.TotalPageCount)
+        {
+            num = page.TotalPageCount - 7 + 1;
+        }
+
+        if (num < 1)
+        {
+            num = 1;
+        }
+    }
+    @if (num > 1)
+    {
+        <li><a href="javascript:void(0)" data-number="1">1</a></li>
+    }
+    @if (page.HasPrevious())
+    {
+        <li><a href="javascript:void(0)" data-number="@page.PreviousPage"><i class="fa fa-angle-left"></i></a></li>
+    }
+    @for (int i = 1, n = num; i <= 7 && n <= page.TotalPageCount; i++, n++)
+    {
+        <li @(page.PageNumber == n ? Html.Raw("class=\"active\"") : null)><a href="javascript:void(0)" data-number="@n">@n<span class="sr-only">(current)</span></a></li>
+    }
+    @if (page.HasNext())
+    {
+        <li><a href="javascript:void(0)" data-number="@page.NextPage"><i class="fa fa-angle-right"></i></a></li>
+    }
+    @if (page.TotalPageCount > num + 7 - 1)
+    {
+        <li><a href="javascript:void(0)" data-number="@page.TotalPageCount">@page.TotalPageCount</a></li>
+    }
+</ul>

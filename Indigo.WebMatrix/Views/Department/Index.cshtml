@@ -1,0 +1,53 @@
+﻿@using Indigo.Organization;
+@model Indigo.Organization.Search.DepartmentSearchForm
+@{
+    var searchResult = ViewBag.SearchResult as Page<Department>;
+}
+
+<div class="box">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-3">
+                @Html.ActionLinkAuthorized("创建部门", "Add", null, new { @class = "btn btn-primary" })
+            </div>
+            <div class="col-md-9 text-right">
+                @using (Html.BeginForm("Index", "Department", FormMethod.Get, new { id = "searchForm", @class = "form-inline", role = "form" }))
+                {
+                }
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>部门名称</th>
+                        <th>描述</th>
+                        <th>职员数量</th>
+                        <th>下级部门数量</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var department in searchResult.Records)
+                    {
+                        <tr>
+                            <td>@department.Name</td>
+                            <td>@department.Description</td>
+                            <td>@department.Employees.Count</td>
+                            <td>@department.SubDepartments.Count</td>
+                            <td>
+                                @Html.ActionLinkAuthorized("修改", "Edit", new { Id = department.Id }, new { @class = "btn btn-primary btn-xs" })
+                                @Html.ActionLinkAuthorized("删除", "Delete", new { Id = department.Id }, new { @class = "btn btn-danger btn-xs" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-right">
+                @RenderPage("~/Views/Shared/_Pagination.cshtml", searchResult)
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+﻿@{
+    var targetRole = ViewBag.TargetRole as Indigo.Security.Role;
+}
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="panel panel-primary">
+            <div class="panel-heading">@Function.Title</div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <th>角色名</th>
+                        <td>@targetRole.Name</td>
+                    </tr>
+                    <tr>
+                        <th>描述</th>
+                        <td>@targetRole.Description</td>
+                    </tr>
+                    <tr>
+                        <th>分配用户数</th>
+                        <td>@targetRole.GetUsers().Count</td>
+                    </tr>
+                    <tr>
+                        <th>创建时间</th>
+                        <td>@targetRole.Created</td>
+                    </tr>
+                    <tr>
+                        <th>创建者</th>
+                        <td>@targetRole.CreatedBy</td>
+                    </tr>
+                    <tr>
+                        <th>最后修改时间</th>
+                        <td>@targetRole.LastModified</td>
+                    </tr>
+                    <tr>
+                        <th>最后修改人</th>
+                        <td>@targetRole.LastModifiedBy</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="panel-footer text-right">
+                @Html.ActionLinkAuthorized("返回", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+</div>

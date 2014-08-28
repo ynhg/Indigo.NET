@@ -1,0 +1,685 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BD11B54E-791C-40CF-AEEF-CF422A815294}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Indigo.WebMatrix</RootNamespace>
+    <AssemblyName>Indigo.WebMatrix</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Log4Net">
+      <HintPath>..\packages\Common.Logging.Log4Net.2.0.1\lib\net20\Common.Logging.Log4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Quartz, Version=2.2.4.400, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Quartz.2.2.4\lib\net40\Quartz.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Aop">
+      <HintPath>..\packages\Spring.Aop.2.0.0-RC1\lib\net40\Spring.Aop.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Core">
+      <HintPath>..\packages\Spring.Core.2.0.0-RC1\lib\net40\Spring.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Data, Version=2.0.0.40000, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Spring.Data.2.0.0-RC1\lib\net40\Spring.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Scheduling.Quartz2">
+      <HintPath>..\packages\Spring.Scheduling.Quartz2.2.0.0-RC1\lib\net40\Spring.Scheduling.Quartz2.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Web">
+      <HintPath>..\packages\Spring.Web.2.0.0-RC1\lib\net40\Spring.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Web.Mvc4">
+      <HintPath>..\packages\Spring.Web.Mvc4.2.0.0-RC1\lib\net40\Spring.Web.Mvc4.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.30506.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.30506.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.30506.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.30506.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.30506.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\DepartmentController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentModels\AddModel.cs" />
+    <Compile Include="Models\RoleModels\AddModel.cs" />
+    <Compile Include="Models\RoleModels\ChangePermissionsModel.cs" />
+    <Compile Include="Models\RoleModels\EditModel.cs" />
+    <Compile Include="Models\UserModels\AddModel.cs" />
+    <Compile Include="Models\UserModels\ChangePermissionsModel.cs" />
+    <Compile Include="Models\UserModels\ChangeRolesModel.cs" />
+    <Compile Include="Models\UserModels\EditModel.cs" />
+    <Compile Include="Models\UserModels\SignInModel.cs" />
+    <Compile Include="Models\UserModels\SignUpModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <EmbeddedResource Include="Config\indigo-core.xml" />
+    <EmbeddedResource Include="Config\indigo-webmatrix.xml" />
+    <Content Include="Global.asax" />
+    <None Include="static\base\admin.js.bak" />
+    <Content Include="static\base\admin.js" />
+    <None Include="static\base\css\admin.css.bak" />
+    <Content Include="static\base\css\admin.css" />
+    <Content Include="static\base\css\base.css" />
+    <Content Include="static\base\css\blank.css" />
+    <None Include="static\base\css\base.css.bak" />
+    <Content Include="static\base\css\skin-black.css" />
+    <Content Include="static\base\css\skin-blue.css" />
+    <Content Include="static\base\images\ajax-loader.gif" />
+    <Content Include="static\base\images\ajax-loader1.gif" />
+    <Content Include="static\base\images\avatar.png" />
+    <Content Include="static\base\images\avatar04.png" />
+    <Content Include="static\base\images\avatar2.png" />
+    <Content Include="static\base\images\avatar3.png" />
+    <Content Include="static\base\images\avatar5.png" />
+    <Content Include="static\base\images\blur-background04.jpg" />
+    <Content Include="static\base\images\blur-background08.jpg" />
+    <Content Include="static\base\images\blur-background09.jpg" />
+    <Content Include="static\base\images\bootstrap-colorpicker\alpha-horizontal.png" />
+    <Content Include="static\base\images\bootstrap-colorpicker\alpha.png" />
+    <Content Include="static\base\images\bootstrap-colorpicker\hue-horizontal.png" />
+    <Content Include="static\base\images\bootstrap-colorpicker\hue.png" />
+    <Content Include="static\base\images\bootstrap-colorpicker\saturation.png" />
+    <Content Include="static\base\images\credit\american-express.png" />
+    <Content Include="static\base\images\credit\cirrus.png" />
+    <Content Include="static\base\images\credit\mastercard.png" />
+    <Content Include="static\base\images\credit\mestro.png" />
+    <Content Include="static\base\images\credit\paypal.png" />
+    <Content Include="static\base\images\credit\paypal2.png" />
+    <Content Include="static\base\images\credit\visa.png" />
+    <Content Include="static\base\images\icons.png" />
+    <Content Include="static\base\images\minimal%402x.png" />
+    <Content Include="static\base\images\minimal.png" />
+    <Content Include="static\base\images\sprite-skin-flat.png" />
+    <Content Include="static\base\images\sprite-skin-nice.png" />
+    <Content Include="static\base\images\user-bg.png" />
+    <Content Include="static\base\images\user.jpg" />
+    <Content Include="static\base\images\user2.jpg" />
+    <Content Include="static\base\base.js" />
+    <Content Include="static\plugins\bootstrap\css\bootstrap-theme.css" />
+    <Content Include="static\plugins\bootstrap\css\bootstrap-theme.min.css" />
+    <Content Include="static\plugins\bootstrap\css\bootstrap.css" />
+    <Content Include="static\plugins\bootstrap\css\bootstrap.min.css" />
+    <Content Include="static\plugins\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="static\plugins\bootstrap\js\bootstrap.js" />
+    <Content Include="static\plugins\bootstrap\js\bootstrap.min.js" />
+    <Content Include="static\plugins\icheck\icheck.js" />
+    <Content Include="static\plugins\icheck\icheck.min.js" />
+    <Content Include="static\plugins\icheck\skins\all.css" />
+    <Content Include="static\plugins\icheck\skins\flat\aero%402x.png" />
+    <Content Include="static\plugins\icheck\skins\flat\aero.css" />
+    <Content Include="static\plugins\icheck\skins\flat\aero.png" />
+    <Content Include="static\plugins\icheck\skins\flat\blue%402x.png" />
+    <Content Include="static\plugins\icheck\skins\flat\blue.css" />
+    <Content Include="static\plugins\icheck\skins\flat\blue.png" />
+    <Content Include="static\plugins\icheck\skins\flat\flat%402x.png" />
+    <Content Include="static\plugins\icheck\skins\flat\flat.css" />
+    <Content Include="static\plugins\icheck\skins\flat\flat.png" />
+    <Content Include="static\plugins\icheck\skins\flat\green%402x.png" />
+    <Content Include="static\plugins\icheck\skins\flat\green.css" />
+    <Content Include="static\plugins\icheck\skins\flat\green.png" />
+    <Content Include="static\plugins\icheck\skins\flat\grey%402x.png" />
+    <Content Include="static\plugins\icheck\skins\flat\grey.css" />
+    <Content Include="static\plugins\icheck\skins\flat\grey.png" />
+    <Content Include="static\plugins\icheck\skins\flat\orange%402x.png" />
+    <Content Include="static\plugins\icheck\skins\flat\orange.css" />
+    <Content Include="static\plugins\icheck\skins\flat\orange.png" />
+    <Content Include="static\plugins\icheck\skins\flat\pink%402x.png" />
+    <Content Include="static\plugins\icheck\skins\flat\pink.css" />
+    <Content Include="static\plugins\icheck\skins\flat\pink.png" />
+    <Content Include="static\plugins\icheck\skins\flat\purple%402x.png" />
+    <Content Include="static\plugins\icheck\skins\flat\purple.css" />
+    <Content Include="static\plugins\icheck\skins\flat\purple.png" />
+    <Content Include="static\plugins\icheck\skins\flat\red%402x.png" />
+    <Content Include="static\plugins\icheck\skins\flat\red.css" />
+    <Content Include="static\plugins\icheck\skins\flat\red.png" />
+    <Content Include="static\plugins\icheck\skins\flat\yellow%402x.png" />
+    <Content Include="static\plugins\icheck\skins\flat\yellow.css" />
+    <Content Include="static\plugins\icheck\skins\flat\yellow.png" />
+    <Content Include="static\plugins\icheck\skins\flat\_all.css" />
+    <Content Include="static\plugins\icheck\skins\futurico\futurico%402x.png" />
+    <Content Include="static\plugins\icheck\skins\futurico\futurico.css" />
+    <Content Include="static\plugins\icheck\skins\futurico\futurico.png" />
+    <Content Include="static\plugins\icheck\skins\line\aero.css" />
+    <Content Include="static\plugins\icheck\skins\line\blue.css" />
+    <Content Include="static\plugins\icheck\skins\line\green.css" />
+    <Content Include="static\plugins\icheck\skins\line\grey.css" />
+    <Content Include="static\plugins\icheck\skins\line\line%402x.png" />
+    <Content Include="static\plugins\icheck\skins\line\line.css" />
+    <Content Include="static\plugins\icheck\skins\line\line.png" />
+    <Content Include="static\plugins\icheck\skins\line\orange.css" />
+    <Content Include="static\plugins\icheck\skins\line\pink.css" />
+    <Content Include="static\plugins\icheck\skins\line\purple.css" />
+    <Content Include="static\plugins\icheck\skins\line\red.css" />
+    <Content Include="static\plugins\icheck\skins\line\yellow.css" />
+    <Content Include="static\plugins\icheck\skins\line\_all.css" />
+    <Content Include="static\plugins\icheck\skins\minimal\aero%402x.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\aero.css" />
+    <Content Include="static\plugins\icheck\skins\minimal\aero.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\blue%402x.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\blue.css" />
+    <Content Include="static\plugins\icheck\skins\minimal\blue.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\green%402x.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\green.css" />
+    <Content Include="static\plugins\icheck\skins\minimal\green.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\grey%402x.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\grey.css" />
+    <Content Include="static\plugins\icheck\skins\minimal\grey.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\minimal%402x.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\minimal.css" />
+    <Content Include="static\plugins\icheck\skins\minimal\minimal.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\orange%402x.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\orange.css" />
+    <Content Include="static\plugins\icheck\skins\minimal\orange.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\pink%402x.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\pink.css" />
+    <Content Include="static\plugins\icheck\skins\minimal\pink.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\purple%402x.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\purple.css" />
+    <Content Include="static\plugins\icheck\skins\minimal\purple.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\red%402x.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\red.css" />
+    <Content Include="static\plugins\icheck\skins\minimal\red.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\yellow%402x.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\yellow.css" />
+    <Content Include="static\plugins\icheck\skins\minimal\yellow.png" />
+    <Content Include="static\plugins\icheck\skins\minimal\_all.css" />
+    <Content Include="static\plugins\icheck\skins\polaris\polaris%402x.png" />
+    <Content Include="static\plugins\icheck\skins\polaris\polaris.css" />
+    <Content Include="static\plugins\icheck\skins\polaris\polaris.png" />
+    <Content Include="static\plugins\icheck\skins\square\aero%402x.png" />
+    <Content Include="static\plugins\icheck\skins\square\aero.css" />
+    <Content Include="static\plugins\icheck\skins\square\aero.png" />
+    <Content Include="static\plugins\icheck\skins\square\blue%402x.png" />
+    <Content Include="static\plugins\icheck\skins\square\blue.css" />
+    <Content Include="static\plugins\icheck\skins\square\blue.png" />
+    <Content Include="static\plugins\icheck\skins\square\green%402x.png" />
+    <Content Include="static\plugins\icheck\skins\square\green.css" />
+    <Content Include="static\plugins\icheck\skins\square\green.png" />
+    <Content Include="static\plugins\icheck\skins\square\grey%402x.png" />
+    <Content Include="static\plugins\icheck\skins\square\grey.css" />
+    <Content Include="static\plugins\icheck\skins\square\grey.png" />
+    <Content Include="static\plugins\icheck\skins\square\orange%402x.png" />
+    <Content Include="static\plugins\icheck\skins\square\orange.css" />
+    <Content Include="static\plugins\icheck\skins\square\orange.png" />
+    <Content Include="static\plugins\icheck\skins\square\pink%402x.png" />
+    <Content Include="static\plugins\icheck\skins\square\pink.css" />
+    <Content Include="static\plugins\icheck\skins\square\pink.png" />
+    <Content Include="static\plugins\icheck\skins\square\purple%402x.png" />
+    <Content Include="static\plugins\icheck\skins\square\purple.css" />
+    <Content Include="static\plugins\icheck\skins\square\purple.png" />
+    <Content Include="static\plugins\icheck\skins\square\red%402x.png" />
+    <Content Include="static\plugins\icheck\skins\square\red.css" />
+    <Content Include="static\plugins\icheck\skins\square\red.png" />
+    <Content Include="static\plugins\icheck\skins\square\square%402x.png" />
+    <Content Include="static\plugins\icheck\skins\square\square.css" />
+    <Content Include="static\plugins\icheck\skins\square\square.png" />
+    <Content Include="static\plugins\icheck\skins\square\yellow%402x.png" />
+    <Content Include="static\plugins\icheck\skins\square\yellow.css" />
+    <Content Include="static\plugins\icheck\skins\square\yellow.png" />
+    <Content Include="static\plugins\icheck\skins\square\_all.css" />
+    <Content Include="static\plugins\jquery-validation\additional-methods.js" />
+    <Content Include="static\plugins\jquery-validation\additional-methods.min.js" />
+    <Content Include="static\plugins\jquery-validation\jquery.validate.js" />
+    <Content Include="static\plugins\jquery-validation\jquery.validate.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_ar.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_ar.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_bg.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_bg.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_ca.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_ca.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_cs.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_cs.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_da.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_da.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_de.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_de.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_el.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_el.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_es.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_es.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_es_AR.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_es_AR.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_et.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_et.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_eu.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_eu.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_fa.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_fa.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_fi.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_fi.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_fr.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_fr.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_gl.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_gl.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_he.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_he.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_hr.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_hr.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_hu.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_hu.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_id.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_id.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_is.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_is.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_it.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_it.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_ja.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_ja.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_ka.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_ka.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_kk.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_kk.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_ko.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_ko.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_lt.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_lt.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_lv.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_lv.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_my.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_my.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_nl.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_nl.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_no.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_no.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_pl.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_pl.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_pt_BR.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_pt_BR.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_pt_PT.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_pt_PT.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_ro.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_ro.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_ru.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_ru.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_si.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_si.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_sk.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_sk.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_sl.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_sl.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_sr.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_sr.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_sr_lat.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_sr_lat.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_sv.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_sv.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_th.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_th.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_tj.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_tj.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_tr.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_tr.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_uk.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_uk.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_vi.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_vi.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_zh.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_zh.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_zh_TW.js" />
+    <Content Include="static\plugins\jquery-validation\localization\messages_zh_TW.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\methods_de.js" />
+    <Content Include="static\plugins\jquery-validation\localization\methods_de.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\methods_es_CL.js" />
+    <Content Include="static\plugins\jquery-validation\localization\methods_es_CL.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\methods_fi.js" />
+    <Content Include="static\plugins\jquery-validation\localization\methods_fi.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\methods_nl.js" />
+    <Content Include="static\plugins\jquery-validation\localization\methods_nl.min.js" />
+    <Content Include="static\plugins\jquery-validation\localization\methods_pt.js" />
+    <Content Include="static\plugins\jquery-validation\localization\methods_pt.min.js" />
+    <Content Include="static\plugins\jquery\jquery.js" />
+    <Content Include="static\plugins\jquery\jquery.min.js" />
+    <Content Include="static\plugins\respond\respond.matchmedia.addListener.min.js" />
+    <Content Include="static\plugins\respond\respond.matchmedia.addListener.src.js" />
+    <Content Include="static\plugins\respond\respond.min.js" />
+    <Content Include="static\plugins\respond\respond.src.js" />
+    <Content Include="static\plugins\html5shiv\html5shiv-printshiv.js" />
+    <Content Include="static\plugins\html5shiv\html5shiv-printshiv.min.js" />
+    <Content Include="static\plugins\html5shiv\html5shiv.js" />
+    <Content Include="static\plugins\html5shiv\html5shiv.min.js" />
+    <Content Include="static\plugins\font-awesome\css\font-awesome.css" />
+    <Content Include="static\plugins\font-awesome\css\font-awesome.min.css" />
+    <Content Include="static\plugins\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="static\plugins\jquery-ui\i18n\jquery-ui-i18n.js" />
+    <Content Include="static\plugins\jquery-ui\i18n\jquery-ui-i18n.min.js" />
+    <Content Include="static\plugins\jquery-ui\images\animated-overlay.gif" />
+    <Content Include="static\plugins\jquery-ui\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="static\plugins\jquery-ui\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="static\plugins\jquery-ui\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="static\plugins\jquery-ui\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="static\plugins\jquery-ui\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="static\plugins\jquery-ui\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="static\plugins\jquery-ui\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="static\plugins\jquery-ui\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="static\plugins\jquery-ui\images\ui-icons_222222_256x240.png" />
+    <Content Include="static\plugins\jquery-ui\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="static\plugins\jquery-ui\images\ui-icons_454545_256x240.png" />
+    <Content Include="static\plugins\jquery-ui\images\ui-icons_888888_256x240.png" />
+    <Content Include="static\plugins\jquery-ui\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="static\plugins\jquery-ui\jquery-ui.css" />
+    <Content Include="static\plugins\jquery-ui\jquery-ui.js" />
+    <Content Include="static\plugins\jquery-ui\jquery-ui.min.css" />
+    <Content Include="static\plugins\jquery-ui\jquery-ui.min.js" />
+    <Content Include="static\plugins\jquery.bak\jquery.js" />
+    <Content Include="static\plugins\jquery.bak\jquery.min.js" />
+    <Content Include="static\plugins\jquery.bak\jquery.nestedSortable.js" />
+    <Content Include="static\plugins\jquery.bak\jquery.validate.js" />
+    <Content Include="static\plugins\jquery.bak\jquery.validate.min.js" />
+    <Content Include="static\plugins\jquery.bak\jquery.validate.unobtrusive.js" />
+    <Content Include="static\plugins\jquery.bak\jquery.validate.unobtrusive.min.js" />
+    <Content Include="static\plugins\messenger\css\messenger-spinner.css" />
+    <Content Include="static\plugins\messenger\css\messenger-theme-air.css" />
+    <Content Include="static\plugins\messenger\css\messenger-theme-block.css" />
+    <Content Include="static\plugins\messenger\css\messenger-theme-flat.css" />
+    <Content Include="static\plugins\messenger\css\messenger-theme-future.css" />
+    <Content Include="static\plugins\messenger\css\messenger-theme-ice.css" />
+    <Content Include="static\plugins\messenger\css\messenger.css" />
+    <Content Include="static\plugins\messenger\js\messenger-theme-flat.js" />
+    <Content Include="static\plugins\messenger\js\messenger-theme-future.js" />
+    <Content Include="static\plugins\messenger\js\messenger.js" />
+    <Content Include="static\plugins\messenger\js\messenger.min.js" />
+    <Content Include="static\plugins\select2\select2-bootstrap.css" />
+    <Content Include="static\plugins\select2\select2-spinner.gif" />
+    <Content Include="static\plugins\select2\select2.css" />
+    <Content Include="static\plugins\select2\select2.js" />
+    <Content Include="static\plugins\select2\select2.min.js" />
+    <Content Include="static\plugins\select2\select2.png" />
+    <Content Include="static\plugins\select2\select2x2.png" />
+    <Content Include="static\plugins\select2\select2_locale_ar.js" />
+    <Content Include="static\plugins\select2\select2_locale_az.js" />
+    <Content Include="static\plugins\select2\select2_locale_bg.js" />
+    <Content Include="static\plugins\select2\select2_locale_ca.js" />
+    <Content Include="static\plugins\select2\select2_locale_cs.js" />
+    <Content Include="static\plugins\select2\select2_locale_da.js" />
+    <Content Include="static\plugins\select2\select2_locale_de.js" />
+    <Content Include="static\plugins\select2\select2_locale_el.js" />
+    <Content Include="static\plugins\select2\select2_locale_es.js" />
+    <Content Include="static\plugins\select2\select2_locale_et.js" />
+    <Content Include="static\plugins\select2\select2_locale_eu.js" />
+    <Content Include="static\plugins\select2\select2_locale_fa.js" />
+    <Content Include="static\plugins\select2\select2_locale_fi.js" />
+    <Content Include="static\plugins\select2\select2_locale_fr.js" />
+    <Content Include="static\plugins\select2\select2_locale_gl.js" />
+    <Content Include="static\plugins\select2\select2_locale_he.js" />
+    <Content Include="static\plugins\select2\select2_locale_hr.js" />
+    <Content Include="static\plugins\select2\select2_locale_hu.js" />
+    <Content Include="static\plugins\select2\select2_locale_id.js" />
+    <Content Include="static\plugins\select2\select2_locale_is.js" />
+    <Content Include="static\plugins\select2\select2_locale_it.js" />
+    <Content Include="static\plugins\select2\select2_locale_ja.js" />
+    <Content Include="static\plugins\select2\select2_locale_ka.js" />
+    <Content Include="static\plugins\select2\select2_locale_ko.js" />
+    <Content Include="static\plugins\select2\select2_locale_lt.js" />
+    <Content Include="static\plugins\select2\select2_locale_lv.js" />
+    <Content Include="static\plugins\select2\select2_locale_mk.js" />
+    <Content Include="static\plugins\select2\select2_locale_ms.js" />
+    <Content Include="static\plugins\select2\select2_locale_nl.js" />
+    <Content Include="static\plugins\select2\select2_locale_no.js" />
+    <Content Include="static\plugins\select2\select2_locale_pl.js" />
+    <Content Include="static\plugins\select2\select2_locale_pt-BR.js" />
+    <Content Include="static\plugins\select2\select2_locale_pt-PT.js" />
+    <Content Include="static\plugins\select2\select2_locale_ro.js" />
+    <Content Include="static\plugins\select2\select2_locale_rs.js" />
+    <Content Include="static\plugins\select2\select2_locale_ru.js" />
+    <Content Include="static\plugins\select2\select2_locale_sk.js" />
+    <Content Include="static\plugins\select2\select2_locale_sv.js" />
+    <Content Include="static\plugins\select2\select2_locale_th.js" />
+    <Content Include="static\plugins\select2\select2_locale_tr.js" />
+    <Content Include="static\plugins\select2\select2_locale_ug-CN.js" />
+    <Content Include="static\plugins\select2\select2_locale_uk.js" />
+    <Content Include="static\plugins\select2\select2_locale_vi.js" />
+    <Content Include="static\plugins\select2\select2_locale_zh-CN.js" />
+    <Content Include="static\plugins\select2\select2_locale_zh-TW.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\Employee\Index.cshtml" />
+    <Content Include="Views\Employee\Add.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Indigo.Core\Indigo.Core.csproj">
+      <Project>{9a40db38-4380-4f84-b1de-04a2ae7b3702}</Project>
+      <Name>Indigo.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Indigo.Web.Mvc\Indigo.Web.Mvc.csproj">
+      <Project>{ccecbb38-ac2f-4770-8a6d-382cfb65f2b3}</Project>
+      <Name>Indigo.Web.Mvc</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="static\base\fonts\kaushanscript-regular.woff" />
+    <Content Include="static\base\fonts\sourcesanspro-it.woff" />
+    <Content Include="static\base\fonts\sourcesanspro-light.woff" />
+    <Content Include="static\base\fonts\sourcesanspro-lightit.woff" />
+    <Content Include="static\base\fonts\sourcesanspro-regular.woff" />
+    <Content Include="static\base\fonts\sourcesanspro-semibold.woff" />
+    <Content Include="static\base\fonts\sourcesanspro-semiboldit.woff" />
+    <Content Include="static\base\images\.DS_Store" />
+    <Content Include="static\plugins\select2\select2_locale_en.js.template" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="log4net.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Role\Add.cshtml" />
+    <Content Include="Views\Role\ChangePermissions.cshtml" />
+    <Content Include="Views\Role\Delete.cshtml" />
+    <Content Include="Views\Role\Detail.cshtml" />
+    <Content Include="Views\Role\Edit.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_BlankTemplate.cshtml" />
+    <Content Include="Views\Shared\_SideMenu.cshtml" />
+    <Content Include="Views\Shared\_Pagination.cshtml" />
+    <Content Include="Views\User\Add.cshtml" />
+    <Content Include="Views\User\ChangePermissions.cshtml" />
+    <Content Include="Views\User\ChangeRoles.cshtml" />
+    <Content Include="Views\User\Delete.cshtml" />
+    <Content Include="Views\User\Detail.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\SignIn.cshtml" />
+    <Content Include="Views\User\SignUp.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="static\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="static\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="static\plugins\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="static\plugins\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="static\plugins\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="static\plugins\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="static\plugins\font-awesome\fonts\FontAwesome.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="static\plugins\jquery\jquery.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="static\plugins\bootstrap\css\bootstrap-theme.css.map" />
+    <Content Include="static\plugins\bootstrap\css\bootstrap.css.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Department\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Department\Add.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_AdminTemplate.cshtml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>1646</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:3057/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。启用“NuGet 程序包还原”可下载这些程序包。有关详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

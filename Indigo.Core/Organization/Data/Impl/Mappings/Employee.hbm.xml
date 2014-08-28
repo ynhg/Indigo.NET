@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Indigo.Core" namespace="Indigo.Organization">
+
+    <class name="Employee" table="ORG_Employees">
+
+        <id name="Id" column="EmployeeId" length="32">
+            <generator class="uuid.hex" />
+        </id>
+
+        <property name="Name" length="20" not-null="true" />
+        <property name="Number" column="UserNumber" length="20" not-null="true" unique="true" />
+        <component name="IdentityCard" class="Indigo.Organization.IdentityCard">
+            <property name="Number" column="IdentityCard" length="20" />
+        </component>
+        <property name="Gender" not-null="true" />
+        <property name="Birthday" />
+        <property name="Age" not-null="true" />
+        <many-to-one name="Department" column="DepartmentId" />
+        <many-to-one name="Position" column="PositionId" />
+
+        <property name="Created" not-null="true" update="false" />
+        <many-to-one name="CreatedBy" update="false" />
+        <property name="LastModified" />
+        <many-to-one name="LastModifiedBy" />
+
+    </class>
+
+</hibernate-mapping>

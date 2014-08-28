@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Indigo.Core" namespace="Indigo.Security">
+
+    <class name="User" table="SEC_Users">
+
+        <cache usage="read-write" />
+
+        <id name="Id" column="UserId" length="32">
+            <generator class="uuid.hex" />
+        </id>
+
+        <property name="Name" length="20" not-null="true" unique="true" />
+        <property name="Password" length="32" not-null="true" />
+        <property name="IsOnline" not-null="true" />
+        <property name="LastSignInTime" />
+        <property name="LastSignOutTime" />
+        <property name="TotalOnlineTime" not-null="true" />
+        <property name="TotalSignInCount" not-null="true" />
+        
+        <set name="Functions" table="SEC_UserPermissions">
+            <cache usage="read-write" />
+            <key column="UserId" />
+            <many-to-many column="FunctionId" class="Indigo.Modules.Function" />
+        </set>
+
+        <set name="Roles" table="SEC_UserRoles">
+            <cache usage="read-write" />
+            <key column="UserId" />
+            <many-to-many column="RoleId" class="Indigo.Security.Role" />
+        </set>
+
+        <property name="Created" not-null="true" update="false" />
+        <many-to-one name="CreatedBy" update="false" />
+        <property name="LastModified" />
+        <many-to-one name="LastModifiedBy" />
+
+    </class>
+
+</hibernate-mapping>

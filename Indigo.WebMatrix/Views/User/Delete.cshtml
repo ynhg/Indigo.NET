@@ -1,0 +1,26 @@
+﻿@{
+    var targetUser = ViewBag.TargetUser as Indigo.Security.User;
+}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title has-success">删除用户确认</h3>
+            </div>
+            @using (Html.BeginForm("Delete", "User", new { Id = targetUser.Id }, FormMethod.Post, new { role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+                    <div class="form-group">
+                        用户名：@targetUser.Name
+                    </div>
+                </div>
+                <div class="box-footer">
+                    @Html.ActionLinkAuthorized("返回列表", "Index", null, new { @class = "btn btn-default" })
+                    <button class="btn btn-danger">确认删除</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

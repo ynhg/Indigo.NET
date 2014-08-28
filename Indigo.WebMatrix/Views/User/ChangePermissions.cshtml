@@ -1,0 +1,101 @@
+﻿@using Indigo.Security;
+@model Indigo.WebMatrix.Models.UserModels.ChangePermissionsModel
+
+<div class="row">
+    <div class="col-sm-4 col-md-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">用户信息</div>
+            <table class="table">
+                <tr>
+                    <th>用户名</th>
+                    <td>@Model.TargetUser.Name</td>
+                </tr>
+                <tr>
+                    <th>创建时间</th>
+                    <td>@Model.TargetUser.Created</td>
+                </tr>
+                <tr>
+                    <th>最近登录</th>
+                    <td>@Model.TargetUser.LastSignInTime</td>
+                </tr>
+                <tr>
+                    <th>登录次数</th>
+                    <td>@Model.TargetUser.TotalSignInCount</td>
+                </tr>
+            </table>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">用户角色</div>
+            <ul class="list-group">
+                @foreach (var role in Model.TargetUser.GetRoles())
+                {
+                    <li class="list-group-item">@role.Name</li>
+                }
+            </ul>
+            <div class="panel-footer text-right">
+                @Html.ActionLinkAuthorized("修改", "ChangeRoles", new { Id = Model.Id }, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8 col-md-9">
+        <div class="panel panel-primary">
+            <div class="panel-heading">权限列表</div>
+            @using (Html.BeginForm("ChangePermissions", "User", FormMethod.Post, new { role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.Id)
+                <div class="panel-body table-responsive">
+                    @foreach (var module in Model.Modules)
+                    {
+                        <table class="table table-hover table-condensed">
+                            @foreach (var component in module.GetComponents())
+                            {
+                                <thead>
+                                    <tr>
+                                        <th colspan="3"><h3>@component.Title</h3></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var function in component.GetFunctions())
+                                    {
+                                        if (function.Protect)
+                                        {
+                                            <tr>
+                                                <td>@function.Title</td>
+                                                <td>@function.Description</td>
+                                                <td>
+                                                    @if (User.Contains(Model.TargetUser))
+                                                    {
+                                                        if (Model.TargetUser.GetRoles().IsPermitted(function))
+                                                        {
+                                                            <input type="checkbox" name="FunctionIds" value="@function.Id" @(Model.TargetUser.IsPermitted(function) ? Html.Raw("checked") : null) disabled />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="checkbox" name="FunctionIds" value="@function.Id" @(Model.TargetUser.IsPermitted(function) ? Html.Raw("checked") : null) @(User.IsPermitted(function) ? null : Html.Raw("disabled")) />
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="checkbox" name="FunctionIds" value="@function.Id" @(Model.TargetUser.IsPermitted(function) ? Html.Raw("checked") : null) disabled />
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            }
+                        </table>
+                    }
+                </div>
+                <div class="panel-footer">
+                    @Html.ActionLinkAuthorized("返回", "Index", null, new { @class = "btn btn-default" })
+                    @if (User.Contains(Model.TargetUser))
+                    {
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+﻿@using Indigo.Organization;
+@model Indigo.Organization.Search.EmployeeSearchForm
+@{
+    var searchResult = ViewBag.SearchResult as Page<Employee>;
+}
+
+<div class="box">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-3">
+                @Html.ActionLinkAuthorized("创建人员", "Add", null, new { @class = "btn btn-primary" })
+            </div>
+            <div class="col-md-9 text-right">
+                @using (Html.BeginForm("Index", "Employee", FormMethod.Get, new { id = "searchForm", @class = "form-inline", role = "form" }))
+                {
+                }
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>员工号</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>出生日期</th>
+                        <th>年龄</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var employee in searchResult.Records)
+                    {
+                        <tr>
+                            <td>@employee.Number</td>
+                            <td>@employee.Name</td>
+                            <td>@employee.Gender</td>
+                            <td>@employee.Birthday</td>
+                            <td>@employee.Age</td>
+                            <td>
+                                @Html.ActionLinkAuthorized("修改", "Edit", new { Id = employee.Id }, new { @class = "btn btn-primary btn-xs" })
+                                @Html.ActionLinkAuthorized("删除", "Delete", new { Id = employee.Id }, new { @class = "btn btn-danger btn-xs" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-right">
+                @RenderPage("~/Views/Shared/_Pagination.cshtml", searchResult)
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Indigo.Core" namespace="Indigo.Modules">
+
+    <class name="Module" table="SYS_Modules">
+
+        <cache usage="read-write" />
+
+        <id name="Id" column="ModuleId" length="32">
+            <generator class="uuid.hex" />
+        </id>
+
+        <property name="Name" length="20" not-null="true" unique="true" />
+        <property name="Title" length="20" />
+        <property name="Description" length="500" />
+        <property name="Ordinal" not-null="true" />
+
+        <set name="Components" order-by="Ordinal" cascade="all-delete-orphan" inverse="true">
+            <cache usage="read-write" />
+            <key column="ModuleId" />
+            <one-to-many class="Indigo.Modules.Component" />
+        </set>
+
+    </class>
+
+</hibernate-mapping>

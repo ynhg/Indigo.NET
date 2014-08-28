@@ -1,0 +1,103 @@
+﻿@model Indigo.WebMatrix.Models.UserModels.ChangeRolesModel
+
+<div class="row">
+    <div class="col-sm-4 col-md-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">用户信息</div>
+            <table class="table">
+                <tr>
+                    <th>用户名</th>
+                    <td>@Model.TargetUser.Name</td>
+                </tr>
+                <tr>
+                    <th>创建时间</th>
+                    <td>@Model.TargetUser.Created</td>
+                </tr>
+                <tr>
+                    <th>最近登录</th>
+                    <td>@Model.TargetUser.LastSignInTime</td>
+                </tr>
+                <tr>
+                    <th>登录次数</th>
+                    <td>@Model.TargetUser.TotalSignInCount</td>
+                </tr>
+            </table>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">用户角色</div>
+
+            @using (Html.BeginForm("ChangeRoles", "User", FormMethod.Post, new { role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="panel-body">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.SelectedRoleId, Model.RemainRoles, "", new { @class = "form-control", autofocus = true })
+                    </div>
+                    <button type="submit" class="btn btn-default">添加</button>
+                </div>
+                <ul class="list-group">
+                    @foreach (var selectedRoleId in Model.SelectedRoleIds)
+                    {
+                        var role = Model.AllRoles.FirstOrDefault(r => r.Id == selectedRoleId);
+                        <li class="list-group-item">
+                            @role.Name<input name="SelectedRoleIds" type="hidden" value="@selectedRoleId" />
+                            @if (User.Contains(role))
+                            {
+                                <button type="submit" class="btn-link pull-right" onclick="$(this).siblings('input').remove();"><i class="fa fa-times-circle text-red"></i></button>
+                            }
+                        </li>
+                    }
+                </ul>
+                <div class="panel-footer text-right">
+                    @Html.ActionLinkAuthorized("返回", "Index", null, new { @class = "btn btn-default" })
+                    <button name="Commit" type="submit" value="true" class="btn btn-primary">保存</button>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-sm-8 col-md-9">
+        <div class="panel panel-primary">
+            <div class="panel-heading">权限列表</div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    @foreach (var module in Model.Modules)
+                    {
+                        <table class="table table-hover table-condensed">
+                            @foreach (var component in module.GetComponents())
+                            {
+                                <thead>
+                                    <tr>
+                                        <th colspan="3"><h3>@component.Title</h3></th>
+                                    </tr>
+                                </thead>
+
+                                foreach (var function in component.GetFunctions())
+                                {
+                                    if (function.Protect)
+                                    {
+                                        <tbody>
+                                            <tr>
+                                                <td>@function.Title</td>
+                                                <td>@function.Description</td>
+                                                <td>
+                                                    @if (Model.SelectedRoles.IsPermitted(function))
+                                                    {
+                                                        <span class="text-green">允许</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-red">禁止</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    }
+                                }
+                            }
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

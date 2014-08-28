@@ -1,0 +1,34 @@
+﻿@using Indigo.Organization;
+@model Indigo.WebMatrix.Models.DepartmentModels.AddModel
+
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="box">
+            @using (Html.BeginForm("Add", "Department", FormMethod.Post, new { role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.Name)
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", autofocus = true })
+                        @Html.ValidationMessageFor(m => m.Name)
+                    </div>
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.SuperDepartmentId)
+                        @Html.DropDownListFor(m => m.SuperDepartmentId, ViewBag.Departments as IEnumerable<SelectListItem>, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.SuperDepartmentId)
+                    </div>
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.Description)
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Description)
+                    </div>
+                </div>
+                <div class="box-footer">
+                    @Html.ActionLinkAuthorized("返回", "Index", null, new { @class = "btn btn-default" })
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

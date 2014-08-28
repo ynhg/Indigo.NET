@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Indigo.Core" namespace="Indigo.Organization">
+
+    <class name="Department" table="ORG_Departments">
+
+        <id name="Id" column="DepartmentId" length="32">
+            <generator class="uuid.hex" />
+        </id>
+
+        <property name="Name" length="20" not-null="true" />
+        <property name="Description" length="500" />
+        <property name="Ordinal" not-null="true" />
+
+        <many-to-one name="SuperDepartment" column="SuperDepartmentId" />
+        <set name="SubDepartments" inverse="true">
+            <key column="SuperDepartmentId" />
+            <one-to-many class="Indigo.Organization.Department" />
+        </set>
+
+        <set name="Employees" inverse="true">
+            <key column="DepartmentId" />
+            <one-to-many class="Indigo.Organization.Employee" />
+        </set>
+
+        <property name="Created" not-null="true" update="false" />
+        <many-to-one name="CreatedBy" update="false" />
+        <property name="LastModified" />
+        <many-to-one name="LastModifiedBy" />
+
+    </class>
+
+</hibernate-mapping>

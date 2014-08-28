@@ -1,0 +1,41 @@
+﻿<ul class="sidebar-menu">
+    <li>
+        <a href="@Url.Action("Dashboard", "Home")">
+            <i class="fa fa-dashboard"></i> <span>仪表板</span>
+        </a>
+    </li>
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-group"></i>
+            <span>组织架构</span>
+            <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            @if (User.IsPermitted("Index", "Department"))
+            {
+                <li><a href="@Url.Action("Index", "Department")"><i class="fa fa-angle-double-right"></i> 部门管理</a></li>
+            }
+            @if (User.IsPermitted("Index", "Employee"))
+            {
+                <li><a href="@Url.Action("Index", "Employee")"><i class="fa fa-angle-double-right"></i> 人员管理</a></li>
+            }
+        </ul>
+    </li>
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-desktop"></i>
+            <span>系统管理</span>
+            <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            @if (User.IsPermitted("Index", "User"))
+            {
+                <li><a href="@Url.Action("Index", "User")"><i class="fa fa-angle-double-right"></i> 用户管理</a></li>
+            }
+            @if (User.IsPermitted("Index", "Role"))
+            {
+                <li><a href="@Url.Action("Index", "Role")"><i class="fa fa-angle-double-right"></i> 角色管理</a></li>
+            }
+        </ul>
+    </li>
+</ul>

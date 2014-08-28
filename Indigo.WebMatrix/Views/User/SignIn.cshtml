@@ -1,0 +1,39 @@
+﻿@model Indigo.WebMatrix.Models.UserModels.SignInModel
+@{
+    Layout = "~/Views/Shared/_BlankTemplate.cshtml";
+}
+
+<div class="modal-dialog modal-sm">
+    <div class="modal-content">
+        <div class="modal-body">
+            @using (Html.BeginForm("SignIn", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <fieldset>
+                    <legend>登录系统</legend>
+                    <div class="form-group has-feedback has-feedback-left">
+                        @Html.LabelFor(m => m.UserName, new { @class = "sr-only" })
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "用户名", autofocus = true })
+                        <i class="fa fa-user fa-lg form-control-feedback"></i>
+                    </div>
+                    <div class="form-group has-feedback has-feedback-left">
+                        @Html.LabelFor(m => m.Password, new { @class = "sr-only" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "密码" })
+                        <i class="fa fa-lock fa-lg form-control-feedback"></i>
+                    </div>
+                    <div class="form-group">
+                        @Html.CheckBoxFor(m => m.RememberMe)
+                        @Html.LabelFor(m => m.RememberMe)
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">登 录</button>
+                    </div>
+                    @Html.ValidationSummary(true)
+                    <div class="form-group text-right">
+                        <a href="@Url.Action("SignUp", "User")">注册新账号</a>
+                    </div>
+                </fieldset>
+            }
+        </div>
+    </div>
+</div>

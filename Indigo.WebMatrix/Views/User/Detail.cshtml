@@ -1,0 +1,63 @@
+﻿@{
+    var targetUser = ViewBag.TargetUser as Indigo.Security.User;
+}
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="panel panel-primary">
+            <div class="panel-heading">@Function.Title</div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <th>用户名</th>
+                        <td>@targetUser.Name</td>
+                    </tr>
+                    <tr>
+                        <th>在线状态</th>
+                        <td>
+                            @if (targetUser.IsOnline)
+                            { <span class="label label-success">在线</span> }
+                            else
+                            { <span class="label label-default">离线</span> }
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>最后登录时间</th>
+                        <td>@targetUser.LastSignInTime</td>
+                    </tr>
+                    <tr>
+                        <th>最后登出时间</th>
+                        <td>@targetUser.LastSignOutTime</td>
+                    </tr>
+                    <tr>
+                        <th>累计登录次数</th>
+                        <td>@targetUser.TotalSignInCount 次</td>
+                    </tr>
+                    <tr>
+                        <th>累计在线时长</th>
+                        <td>@targetUser.TotalOnlineTime</td>
+                    </tr>
+                    <tr>
+                        <th>创建时间</th>
+                        <td>@targetUser.Created</td>
+                    </tr>
+                    <tr>
+                        <th>创建者</th>
+                        <td>@targetUser.CreatedBy</td>
+                    </tr>
+                    <tr>
+                        <th>最后修改时间</th>
+                        <td>@targetUser.LastModified</td>
+                    </tr>
+                    <tr>
+                        <th>最后修改人</th>
+                        <td>@targetUser.LastModifiedBy</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="panel-footer text-right">
+                @Html.ActionLinkAuthorized("返回", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+</div>

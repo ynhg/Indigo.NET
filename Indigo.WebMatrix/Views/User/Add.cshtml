@@ -1,0 +1,36 @@
+﻿@model Indigo.WebMatrix.Models.UserModels.AddModel
+
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title has-success">@Function.Title</h3>
+            </div>
+            @using (Html.BeginForm("Add", "User", FormMethod.Post, new { role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.UserName)
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", autofocus = true })
+                        @Html.ValidationMessageFor(m => m.UserName)
+                    </div>
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.Password)
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </div>
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.ConfirmPassword)
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                    </div>
+                </div>
+                <div class="box-footer">
+                    @Html.ActionLinkAuthorized("返回", "Index", null, new { @class = "btn btn-default" })
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

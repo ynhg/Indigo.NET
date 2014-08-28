@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns='http://www.springframework.net'
+         xmlns:db="http://www.springframework.net/database"
+         xmlns:tx="http://www.springframework.net/tx"
+         xmlns:aop="http://www.springframework.net/aop"
+         xmlns:context="http://www.springframework.net/context">
+
+    <!-- 维护用户在线状态 -->
+    <object id="userOnlineStatusMaintenance" type="Spring.Scheduling.Quartz.MethodInvokingJobDetailFactoryObject, Spring.Scheduling.Quartz2">
+        <property name="TargetType" value="Indigo.Security.Util.SecurityUtils, Indigo.Core" />
+        <property name="TargetMethod" value="SignOut" />
+        <property name="Arguments">
+            <list>
+                <value type="int">60</value>
+            </list>
+        </property>
+        <property name="Concurrent" value="false" />
+    </object>
+
+    <object id="userOnlineStatusMaintenanceTrigger" type="Spring.Scheduling.Quartz.CronTriggerObject, Spring.Scheduling.Quartz2">
+        <property name="JobDetail" ref="userOnlineStatusMaintenance" />
+
+        <!-- 每分钟执行一次 -->
+        <property name="CronExpressionString" value="0 * * * * ?" />
+    </object>
+
+    <object id="quartzSchedulerFactory" type="Spring.Scheduling.Quartz.SchedulerFactoryObject, Spring.Scheduling.Quartz2">
+        <property name="triggers">
+            <list>
+                <ref object="userOnlineStatusMaintenanceTrigger" />
+            </list>
+        </property>
+    </object>
+
+    <context:component-scan base-assemblies="Indigo.WebMatrix" />
+    
+</objects>

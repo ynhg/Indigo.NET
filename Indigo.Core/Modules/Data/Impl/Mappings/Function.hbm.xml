@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Indigo.Core" namespace="Indigo.Modules">
+
+    <class name="Function" table="SYS_Functions">
+
+        <cache usage="read-write" />
+
+        <id name="Id" column="FunctionId" length="32">
+            <generator class="uuid.hex" />
+        </id>
+        
+        <many-to-one name="Component" column="ComponentId" not-null="true" />
+
+        <property name="Name" length="20" not-null="true" />
+        <property name="Protect" not-null="true" />
+        <property name="Title" length="20" />
+        <property name="Description" length="500" />
+        <property name="Ordinal" not-null="true" />
+
+    </class>
+
+</hibernate-mapping>

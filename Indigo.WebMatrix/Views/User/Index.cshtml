@@ -1,0 +1,86 @@
+﻿@using Indigo.Security;
+@model Indigo.Security.Search.UserSearchForm
+@{
+    var searchResult = ViewBag.SearchResult as Page<User>;
+}
+
+<div class="box">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-3">
+                @Html.ActionLinkAuthorized("创建用户", "Add", null, new { @class = "btn btn-primary" })
+            </div>
+            <div class="col-md-9 text-right">
+                @using (Html.BeginForm("Index", "User", FormMethod.Get, new { id = "searchForm", @class = "form-inline", role = "form" }))
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Name, new { @class = "sr-only" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeHolder = "用户名" })
+                    </div>
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                }
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>用户名</th>
+                        <th>创建时间</th>
+                        <th>状态</th>
+                        <th>最后登录时间</th>
+                        <th>最后登出时间</th>
+                        <th>在线时长</th>
+                        <th>登录次数</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in searchResult.Records)
+                    {
+                        <tr>
+                            <td>
+                                @if (User.IsPermitted(Function))
+                                {
+                                    <a href="@Url.Action("Detail", new { Id = user.Id })">@user.Name</a>
+                                }
+                                else
+                                {
+                                    @user.Name
+                                }
+                            </td>
+                            <td>@user.Created</td>
+                            <td>
+                                @if (user.IsOnline)
+                                { <span class="label label-success">在线</span> }
+                                else
+                                { <span class="label label-default">离线</span> }
+                                @if (user.IsAdmin())
+                                {
+                                    <span class="label label-primary">管理员</span>
+                                }
+                            </td>
+                            <td>@user.LastSignInTime</td>
+                            <td>@user.LastSignOutTime</td>
+                            <td>@user.TotalOnlineTime.ToString(@"d\ hh\:mm\:ss")</td>
+                            <td><span class="badge bg-light-blue">@user.TotalSignInCount</span></td>
+                            <td>
+                                @Html.ActionLinkAuthorized("权限", "ChangePermissions", new { Id = user.Id }, new { @class = "btn btn-primary btn-xs" })
+                                @Html.ActionLinkAuthorized("角色", "ChangeRoles", new { Id = user.Id }, new { @class = "btn btn-primary btn-xs" })
+                                @if (User.Contains(user))
+                                {
+                                    @Html.ActionLinkAuthorized("删除", "Delete", new { Id = user.Id }, new { @class = "btn btn-danger btn-xs" })
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-right">
+                @RenderPage("~/Views/Shared/_Pagination.cshtml", searchResult)
+            </div>
+        </div>
+    </div>
+</div>

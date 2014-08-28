@@ -1,0 +1,37 @@
+﻿@model Indigo.WebMatrix.Models.UserModels.SignUpModel
+@{
+    Layout = "~/Views/Shared/_BlankTemplate.cshtml";
+}
+
+<div class="modal-dialog form-box">
+    <div class="modal-content">
+        <div id="signup-box" class="modal-body">
+            @using (Html.BeginForm("SignUp", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <fieldset>
+                    <legend>创建新用户</legend>
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.UserName)
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", autofocus = true })
+                        @Html.ValidationMessageFor(m => m.UserName)
+                    </div>
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.Password)
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        @Html.LabelFor(m => m.ConfirmPassword)
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="注 册" />
+                    </div>
+                </fieldset>
+            }
+        </div>
+    </div>
+</div>
