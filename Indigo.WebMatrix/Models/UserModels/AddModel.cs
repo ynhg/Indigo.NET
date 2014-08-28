@@ -6,7 +6,7 @@ namespace Indigo.WebMatrix.Models.UserModels
     public class AddModel
     {
         [Required]
-        [Remote("IsNameUnique", ErrorMessage = "{0}已经被使用")]
+        [Remote("IsNameUnique", "User", ErrorMessage = "{0}已经被使用")]
         [Display(Name = "用户名")]
         public string UserName { get; set; }
 

@@ -22,7 +22,7 @@ namespace Indigo.WebMatrix.Controllers
             return View(searchForm);
         }
 
-        [Function("创建职位")]
+        [Function("新增职位")]
         public ActionResult Add()
         {
             return View();
@@ -35,7 +35,7 @@ namespace Indigo.WebMatrix.Controllers
             {
                 Position position = OrganizationService.AddPosition(model.Name, model.Rank, User);
 
-                TempData["Message"] = string.Format("职位【{0}】创建成功！", position);
+                TempData["Message"] = string.Format("职位【{0}】新增成功！", position);
 
                 return RedirectToAction("Index");
             }

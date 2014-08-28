@@ -5,3 +5,7 @@
 body {
     background: #3c8dbc;
 }
+
+.modal-dialog {
+    margin-top: -20px;
+}

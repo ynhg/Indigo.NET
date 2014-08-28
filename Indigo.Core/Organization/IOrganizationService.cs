@@ -22,6 +22,7 @@ namespace Indigo.Organization
         Page<Position> Search(PositionSearchForm searchForm);
 
         Employee AddEmployee(Employee employee, Department department, Position position, User oper);
+        Employee GetEmployeeByNumber(string number);
         Page<Employee> Search(EmployeeSearchForm searchForm);
     }
 }

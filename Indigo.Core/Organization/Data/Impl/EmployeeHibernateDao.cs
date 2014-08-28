@@ -8,9 +8,9 @@ namespace Indigo.Organization.Data.Impl
     [Repository]
     public class EmployeeHibernateDao : GenericSecurityHibernateDao<Employee, string>, IEmployeeDao
     {
-        public Employee GetByName(string name)
+        public Employee GetByNumber(string number)
         {
-            var query = CreateQuery("from Employee where Name = :name").SetString("name", name);
+            var query = CreateQuery("from Employee where Number = :number").SetString("number", number);
             return query.UniqueResult<Employee>();
         }
 

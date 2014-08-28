@@ -9,7 +9,7 @@ namespace Indigo.WebMatrix.Models.UserModels
         public string Id { get; set; }
 
         [Required]
-        [Remote("IsUserNameUnique", "User", AdditionalFields = "Id", ErrorMessage = "{0}已经被使用")]
+        [Remote("IsNameUnique", "User", AdditionalFields = "Id", ErrorMessage = "{0}已经被使用")]
         [Display(Name = "用户名")]
         public string UserName { get; set; }
 

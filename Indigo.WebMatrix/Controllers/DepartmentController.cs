@@ -26,7 +26,7 @@ namespace Indigo.WebMatrix.Controllers
             return View(searchForm);
         }
 
-        [Function("创建部门", "创建新的部门")]
+        [Function("新增部门", "创建新的部门")]
         public ActionResult Add()
         {
             ViewBag.Departments = OrganizationService.GetDepartments(User)
@@ -43,7 +43,7 @@ namespace Indigo.WebMatrix.Controllers
                 var superDepartment = model.SuperDepartmentId != null ? OrganizationService.GetDepartmentById(model.SuperDepartmentId, User) : null;
                 var department = OrganizationService.AddDepartment(model.Name, model.Description, superDepartment, 0, User);
 
-                TempData["Message"] = string.Format("部门【{0}】创建成功！", department.Name);
+                TempData["Message"] = string.Format("部门【{0}】新增成功！", department.Name);
 
                 return RedirectToAction("Index");
             }

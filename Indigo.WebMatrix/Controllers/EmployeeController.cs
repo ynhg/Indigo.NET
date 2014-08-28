@@ -46,7 +46,8 @@ namespace Indigo.WebMatrix.Controllers
                 employee.Birthday = model.Birthday;
                 employee.Age = model.Age;
 
-                employee.SetIdentityCardNumber(model.IdentityCardNumber);
+                if (!string.IsNullOrWhiteSpace(model.IdentityCardNumber))
+                    employee.SetIdentityCardNumber(model.IdentityCardNumber);
 
                 Department department = OrganizationService.GetDepartmentById(model.DepartmentId);
                 Position position = OrganizationService.GetPositionById(model.PositionId);
@@ -67,7 +68,7 @@ namespace Indigo.WebMatrix.Controllers
 
         public JsonResult IsNumberUnique(string number, string id)
         {
-            Employee employee = null;
+            Employee employee = OrganizationService.GetEmployeeByNumber(number);
 
             return Json(employee == null || employee.Id == id, JsonRequestBehavior.AllowGet);
         }

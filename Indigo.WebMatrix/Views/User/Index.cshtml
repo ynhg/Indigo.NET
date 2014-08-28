@@ -8,7 +8,7 @@
     <div class="box-body">
         <div class="row">
             <div class="col-md-3">
-                @Html.ActionLinkAuthorized("创建用户", "Add", null, new { @class = "btn btn-primary" })
+                @Html.ActionLinkAuthorized("新增用户", "Add", null, new { @class = "btn btn-primary" })
             </div>
             <div class="col-md-9 text-right">
                 @using (Html.BeginForm("Index", "User", FormMethod.Get, new { id = "searchForm", @class = "form-inline", role = "form" }))

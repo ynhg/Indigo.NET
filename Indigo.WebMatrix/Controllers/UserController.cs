@@ -115,7 +115,7 @@ namespace Indigo.WebMatrix.Controllers
             return View();
         }
 
-        [Function("创建用户", "创建新的用户账号")]
+        [Function("新增用户", "创建新的用户账号")]
         public ActionResult Add()
         {
             return View();
@@ -128,7 +128,7 @@ namespace Indigo.WebMatrix.Controllers
             {
                 var user = SecurityService.AddUser(model.UserName, model.Password, User);
 
-                TempData["Message"] = string.Format("用户【{0}】创建成功！", user.Name);
+                TempData["Message"] = string.Format("用户【{0}】新增成功！", user.Name);
 
                 return RedirectToAction("Index");
             }

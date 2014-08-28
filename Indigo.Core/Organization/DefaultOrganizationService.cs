@@ -117,6 +117,12 @@ namespace Indigo.Organization
         }
 
         [Transaction(ReadOnly = true)]
+        public Employee GetEmployeeByNumber(string number)
+        {
+            return EmployeeDao.GetByNumber(number);
+        }
+
+        [Transaction(ReadOnly = true)]
         public Page<Employee> Search(EmployeeSearchForm searchForm)
         {
             return EmployeeDao.Search(searchForm);

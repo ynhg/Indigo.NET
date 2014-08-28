@@ -24,11 +24,15 @@ namespace Indigo.Infrastructure.Data.Impl
 
         public virtual T GetById(ID id)
         {
+            if (id == null) return null;
+
             return CurrentSession.Get<T>(id);
         }
 
         public virtual T GetReferenceById(ID id)
         {
+            if (id == null) return null;
+
             return CurrentSession.Load<T>(id);
         }
 

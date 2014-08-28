@@ -34,7 +34,7 @@ namespace Indigo.WebMatrix.Controllers
             return View();
         }
 
-        [Function("创建角色", "创建新的角色")]
+        [Function("新增角色", "创建新的角色")]
         public ActionResult Add()
         {
             return View();
@@ -47,7 +47,7 @@ namespace Indigo.WebMatrix.Controllers
             {
                 var role = SecurityService.AddRole(model.RoleName, model.Description, User);
 
-                TempData["Message"] = string.Format("角色【{0}】创建成功！", role.Name);
+                TempData["Message"] = string.Format("角色【{0}】新增成功！", role.Name);
 
                 return RedirectToAction("Index");
             }

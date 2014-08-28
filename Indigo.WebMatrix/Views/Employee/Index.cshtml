@@ -37,7 +37,7 @@
                             <td>@employee.Name</td>
                             <td>@employee.Department</td>
                             <td>@employee.Position</td>
-                            <td>@employee.Gender</td>
+                            <td>@employee.Gender.GetDescription()</td>
                             <td>@employee.Age</td>
                             <td>
                                 @Html.ActionLinkAuthorized("修改", "Edit", new { Id = employee.Id }, new { @class = "btn btn-primary btn-xs" })

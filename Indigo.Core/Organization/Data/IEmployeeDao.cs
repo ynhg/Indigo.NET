@@ -6,7 +6,7 @@ namespace Indigo.Organization.Data
 {
     public interface IEmployeeDao : IGenericSecurityDao<Employee, string>
     {
-        Employee GetByName(string name);
+        Employee GetByNumber(string number);
         Page<Employee> Search(EmployeeSearchForm searchForm);
     }
 }
