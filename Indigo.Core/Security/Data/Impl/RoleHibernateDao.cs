@@ -1,5 +1,6 @@
 ﻿using Indigo.Infrastructure.Search;
 using Indigo.Security.Search;
+using NHibernate;
 using NHibernate.Criterion;
 using Spring.Stereotype;
 
@@ -10,19 +11,19 @@ namespace Indigo.Security.Data.Impl
     {
         public Role GetAdminRole()
         {
-            var query = CreateQuery("from Role where IsAdmin = true");
+            IQuery query = CreateQuery("from Role where IsAdmin = true");
             return query.UniqueResult<Role>();
         }
 
         public Role GetByName(string name)
         {
-            var query = CreateQuery("from Role where Name = :name").SetString("name", name);
+            IQuery query = CreateQuery("from Role where Name = :name").SetString("name", name);
             return query.UniqueResult<Role>();
         }
 
         public Page<Role> Search(RoleSearchForm searchForm)
         {
-            var query = QueryOver();
+            IQueryOver<Role, Role> query = QueryOver();
 
             if (!string.IsNullOrWhiteSpace(searchForm.Name))
             {

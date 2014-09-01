@@ -1,29 +1,23 @@
-﻿using Indigo.Modules;
+﻿using System.Net;
+using System.Web.Mvc;
+using Indigo.Modules;
 using Indigo.Security;
 using Indigo.Security.Util;
 using Spring.Context.Attributes;
 using Spring.Objects.Factory.Attributes;
 using Spring.Objects.Factory.Support;
 using Spring.Stereotype;
-using System.Net;
-using System.Web.Mvc;
 
 namespace Indigo.Web.Mvc
 {
     [Controller, Scope(ObjectScope.Prototype)]
     public abstract class BaseController : Controller
     {
-        private Component component;
+        private Component _component;
 
         public Component Component
         {
-            get
-            {
-                if (component == null)
-                    component = ModuleService.GetComponent(GetType().FullName);
-
-                return component;
-            }
+            get { return _component ?? (_component = ModuleService.GetComponent(GetType().FullName)); }
         }
 
         public new User User
@@ -31,16 +25,16 @@ namespace Indigo.Web.Mvc
             get { return SecurityUtils.CurrentUser; }
         }
 
+        [Autowired]
+        public IModuleService ModuleService { get; set; }
+
         protected ActionResult RedirectToLocal(string url)
         {
             if (Url.IsLocalUrl(url))
             {
                 return Redirect(url);
             }
-            else
-            {
-                return Redirect("/");
-            }
+            return Redirect("/");
         }
 
         protected override void OnAuthorization(AuthorizationContext filterContext)
@@ -66,8 +60,5 @@ namespace Indigo.Web.Mvc
                 }
             }
         }
-
-        [Autowired]
-        public IModuleService ModuleService { get; set; }
     }
 }

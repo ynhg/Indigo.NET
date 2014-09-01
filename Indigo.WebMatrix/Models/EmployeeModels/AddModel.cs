@@ -1,7 +1,7 @@
-﻿using Indigo.Organization;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using Indigo.Organization;
 
 namespace Indigo.WebMatrix.Models.EmployeeModels
 {

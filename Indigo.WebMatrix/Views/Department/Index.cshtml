@@ -4,6 +4,32 @@
     var searchResult = ViewBag.SearchResult as Page<Department>;
 }
 
+@section styles {
+    <style type="text/css">
+        #draggableSample, #droppableSample {
+            height: 100px;
+            padding: 0.5em;
+            width: 150px;
+            border: 1px solid #AAAAAA;
+        }
+
+        #draggableSample {
+            background-color: silver;
+            color: #222222;
+        }
+
+        #droppableSample {
+            background-color: maroon;
+            color: white;
+        }
+
+        #droppableSample.drophover {
+            border: 1px solid green;
+        }
+    </style>
+
+}
+
 <div class="box">
     <div class="box-body">
         <div class="row">
@@ -17,9 +43,52 @@
             </div>
         </div>
         <div class="table-responsive">
+            <table id="tree" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>部门名称</th>
+                        <th>描述</th>
+                        <th>职员数量</th>
+                        <th>下级部门数量</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var department in ViewBag.RootDepartments as IEnumerable<Department>)
+                    {
+                        <tr @(department.SubDepartments.Count > 0 ? Html.Raw("class=\"fancytree-has-children\"") : null)>
+                            <td>@department.Name</td>
+                            <td>@department.Description</td>
+                            <td>@department.Employees.Count</td>
+                            <td>@department.SubDepartments.Count</td>
+                            <td>
+                                @Html.ActionLinkAuthorized("修改", "Edit", new { Id = department.Id }, new { @class = "btn btn-primary btn-xs" })
+                                @Html.ActionLinkAuthorized("删除", "Delete", new { Id = department.Id }, new { @class = "btn btn-danger btn-xs" })
+                            </td>
+                        </tr>
+                        foreach (var subDepartment in department.SubDepartments)
+                        {
+                            <tr>
+                                <td>@subDepartment.Name</td>
+                                <td>@subDepartment.Description</td>
+                                <td>@subDepartment.Employees.Count</td>
+                                <td>@subDepartment.SubDepartments.Count</td>
+                                <td>
+                                    @Html.ActionLinkAuthorized("修改", "Edit", new { Id = subDepartment.Id }, new { @class = "btn btn-primary btn-xs" })
+                                    @Html.ActionLinkAuthorized("删除", "Delete", new { Id = subDepartment.Id }, new { @class = "btn btn-danger btn-xs" })
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="table-responsive" style="display:none;">
             <table class="table table-hover">
                 <thead>
                     <tr>
+                        <th></th>
+                        <th></th>
                         <th>部门名称</th>
                         <th>描述</th>
                         <th>职员数量</th>
@@ -31,6 +100,8 @@
                     @foreach (var department in searchResult.Records)
                     {
                         <tr>
+                            <td></td>
+                            <td></td>
                             <td>@department.Name</td>
                             <td>@department.Description</td>
                             <td>@department.Employees.Count</td>
@@ -51,3 +122,14 @@
         </div>
     </div>
 </div>
+
+@section scripts {
+    <script>
+        $(function () {
+            $("#tree").fancytree({
+                extensions: ["table"],
+                checkbox: true
+            });
+        });
+    </script>
+}

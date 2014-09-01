@@ -1,12 +1,13 @@
-﻿using Spring.Web.Mvc;
-using System;
+﻿using System;
+using System.Web.Mvc;
+using Spring.Web.Mvc;
 
 namespace Indigo.Web.Mvc
 {
     public abstract class BaseMvcApplication : SpringMvcApplication
     {
-        private static bool isDependencyResolverRegistered;
-        private static readonly object lockObject = new object();
+        private static bool _isDependencyResolverRegistered;
+        private static readonly object LockObject = new object();
 
         protected virtual void PostDependencyResolverRegistered()
         {
@@ -14,21 +15,21 @@ namespace Indigo.Web.Mvc
 
         protected override void Application_BeginRequest(object sender, EventArgs e)
         {
-            if (isDependencyResolverRegistered) return;
+            if (_isDependencyResolverRegistered) return;
 
-            lock (lockObject)
+            lock (LockObject)
             {
-                if (isDependencyResolverRegistered) return;
+                if (_isDependencyResolverRegistered) return;
 
-                var resolver = BuildDependencyResolver();
+                IDependencyResolver resolver = BuildDependencyResolver();
                 RegisterDependencyResolver(resolver);
 
-                var webApiResolver = BuildWebApiDependencyResolver();
+                System.Web.Http.Dependencies.IDependencyResolver webApiResolver = BuildWebApiDependencyResolver();
                 RegisterDependencyResolver(webApiResolver);
 
                 PostDependencyResolverRegistered();
 
-                isDependencyResolverRegistered = true;
+                _isDependencyResolverRegistered = true;
             }
         }
     }

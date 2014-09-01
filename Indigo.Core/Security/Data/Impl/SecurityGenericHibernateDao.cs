@@ -1,18 +1,19 @@
-﻿using Indigo.Infrastructure.Data.Impl;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Indigo.Infrastructure.Data.Impl;
 
 namespace Indigo.Security.Data.Impl
 {
-    public abstract class GenericSecurityHibernateDao<T, ID> : GenericHibernateDao<T, ID>, IGenericSecurityDao<T, ID> where T : UserEntity<ID>
+    public abstract class GenericSecurityHibernateDao<T, TId> : GenericHibernateDao<T, TId>, IGenericSecurityDao<T, TId>
+        where T : UserEntity<TId>
     {
-        public override ID Save(T entity)
+        public override TId Save(T entity)
         {
             return Save(entity, null);
         }
 
-        public ID Save(T entity, User user)
+        public TId Save(T entity, User user)
         {
             entity.Created = DateTime.Now;
             entity.CreatedBy = user;
@@ -37,7 +38,7 @@ namespace Indigo.Security.Data.Impl
             base.Delete(entity);
         }
 
-        public T GetById(ID id, User user)
+        public T GetById(TId id, User user)
         {
             T entity = base.GetById(id);
 
@@ -48,7 +49,7 @@ namespace Indigo.Security.Data.Impl
             return entity;
         }
 
-        public T GetReferenceById(ID id, User user)
+        public T GetReferenceById(TId id, User user)
         {
             return GetById(id, user);
         }

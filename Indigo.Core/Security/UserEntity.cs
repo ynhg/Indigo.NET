@@ -1,11 +1,11 @@
-﻿using Indigo.Infrastructure;
+﻿using System;
+using Indigo.Infrastructure;
 using Indigo.Infrastructure.Util;
 using Indigo.Security.Exceptions;
-using System;
 
 namespace Indigo.Security
 {
-    public abstract class UserEntity<ID> : Entity<ID>
+    public abstract class UserEntity<TId> : Entity<TId>
     {
         public virtual DateTime Created { get; protected internal set; }
         public virtual User CreatedBy { get; protected internal set; }

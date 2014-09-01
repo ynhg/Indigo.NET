@@ -2,22 +2,22 @@
 {
     public class SearchForm
     {
-        public const int DEFAULT_FIRST_PAGE = 1;
-        public const int DEFAULT_PAGE_SIZE = 10;
+        public static readonly int DefaultFirstPage = 1;
+        public static readonly int DefaultPageSize = 10;
 
-        private int pageNumber = DEFAULT_FIRST_PAGE;
-        private int pageSize = DEFAULT_PAGE_SIZE;
+        private int _pageNumber = DefaultFirstPage;
+        private int _pageSize = DefaultPageSize;
 
         public int PageNumber
         {
-            get { return pageNumber; }
-            set { pageNumber = value; }
+            get { return _pageNumber; }
+            set { _pageNumber = value; }
         }
 
         public int PageSize
         {
-            get { return pageSize; }
-            set { pageSize = value; }
+            get { return _pageSize; }
+            set { _pageSize = value; }
         }
     }
 }

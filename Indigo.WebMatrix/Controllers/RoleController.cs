@@ -1,15 +1,16 @@
-﻿using Indigo.Modules;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
+using Indigo.Modules;
 using Indigo.Modules.Attributes;
 using Indigo.Security;
 using Indigo.Security.Search;
 using Indigo.Web.Mvc;
 using Indigo.WebMatrix.Models.RoleModels;
 using Spring.Objects.Factory.Attributes;
-using System.Web.Mvc;
 
 namespace Indigo.WebMatrix.Controllers
 {
-    [Component("角色管理", null, true, 120)]
+    [Component("角色管理", 120)]
     public class RoleController : BaseController
     {
         [Autowired]
@@ -45,7 +46,7 @@ namespace Indigo.WebMatrix.Controllers
         {
             if (ModelState.IsValid)
             {
-                var role = SecurityService.AddRole(model.RoleName, model.Description, User);
+                Role role = SecurityService.AddRole(model.RoleName, model.Description, User);
 
                 TempData["Message"] = string.Format("角色【{0}】新增成功！", role.Name);
 
@@ -58,12 +59,14 @@ namespace Indigo.WebMatrix.Controllers
         [Function("修改角色", "修改角色信息")]
         public ActionResult Edit(string id)
         {
-            var targetRole = SecurityService.GetRoleById(id);
+            Role targetRole = SecurityService.GetRoleById(id);
 
-            var model = new EditModel();
-            model.Id = targetRole.Id;
-            model.RoleName = targetRole.Name;
-            model.Description = targetRole.Description;
+            var model = new EditModel
+            {
+                Id = targetRole.Id,
+                RoleName = targetRole.Name,
+                Description = targetRole.Description
+            };
 
             return View(model);
         }
@@ -73,7 +76,7 @@ namespace Indigo.WebMatrix.Controllers
         {
             if (ModelState.IsValid)
             {
-                var targetRole = SecurityService.GetRoleById(model.Id);
+                Role targetRole = SecurityService.GetRoleById(model.Id);
                 targetRole.Name = model.RoleName;
                 targetRole.Description = model.Description;
 
@@ -90,8 +93,8 @@ namespace Indigo.WebMatrix.Controllers
         [Function("修改权限", "设置角色的访问权限")]
         public ActionResult ChangePermissions(string id)
         {
-            var targetRole = SecurityService.GetRoleById(id);
-            var allModules = MvcModuleService.GetModules();
+            Role targetRole = SecurityService.GetRoleById(id);
+            IList<Module> allModules = MvcModuleService.GetModules();
 
             var model = new ChangePermissionsModel(targetRole, allModules);
             return View(model);
@@ -100,7 +103,7 @@ namespace Indigo.WebMatrix.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult ChangePermissions(ChangePermissionsModel model)
         {
-            var targetRole = SecurityService.GetRoleById(model.Id);
+            Role targetRole = SecurityService.GetRoleById(model.Id);
 
             if (ModelState.IsValid)
             {
@@ -128,7 +131,7 @@ namespace Indigo.WebMatrix.Controllers
         [ActionName("Delete"), HttpPost, ValidateAntiForgeryToken]
         public ActionResult DoDelete(string id)
         {
-            var targetRole = SecurityService.GetRoleById(id);
+            Role targetRole = SecurityService.GetRoleById(id);
 
             SecurityService.DeleteRole(id);
 
@@ -139,7 +142,7 @@ namespace Indigo.WebMatrix.Controllers
 
         public JsonResult IsNameUnique(string roleName, string id)
         {
-            var role = SecurityService.GetRoleByName(roleName);
+            Role role = SecurityService.GetRoleByName(roleName);
 
             return Json(role == null || role.Id == id, JsonRequestBehavior.AllowGet);
         }

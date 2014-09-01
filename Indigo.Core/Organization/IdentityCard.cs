@@ -4,16 +4,16 @@ namespace Indigo.Organization
 {
     public class IdentityCard
     {
-        private string _number;
-
-        public string Number { get { return _number; } protected set { _number = value; } }
-
-        protected IdentityCard() { }
+        protected IdentityCard()
+        {
+        }
 
         public IdentityCard(string number)
         {
-            _number = number;
+            Number = number;
         }
+
+        public string Number { get; protected set; }
 
         public DateTime GetBirthday()
         {
@@ -30,14 +30,13 @@ namespace Indigo.Organization
 
             if (now.DayOfYear >= GetBirthday().DayOfYear)
                 return now.Year - GetBirthday().Year;
-            else
-                return now.Year - GetBirthday().Year - 1;
+            return now.Year - GetBirthday().Year - 1;
         }
 
         public Gender GetGender()
         {
             int flag = Convert.ToInt32(Number.Substring(16, 1));
-            return flag == 0 || flag % 2 == 0 ? Gender.Female : Gender.Male;
+            return flag == 0 || flag%2 == 0 ? Gender.Female : Gender.Male;
         }
 
         public override string ToString()

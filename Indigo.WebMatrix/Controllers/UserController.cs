@@ -1,4 +1,9 @@
-﻿using Indigo.Modules;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using System.Web.Security;
+using Indigo.Modules;
 using Indigo.Modules.Attributes;
 using Indigo.Security;
 using Indigo.Security.Exceptions;
@@ -7,14 +12,10 @@ using Indigo.Security.Util;
 using Indigo.Web.Mvc;
 using Indigo.WebMatrix.Models.UserModels;
 using Spring.Objects.Factory.Attributes;
-using System;
-using System.Linq;
-using System.Web.Mvc;
-using System.Web.Security;
 
 namespace Indigo.WebMatrix.Controllers
 {
-    [Component("用户管理", null, true, 110)]
+    [Component("用户管理", 110)]
     public class UserController : BaseController
     {
         [Autowired]
@@ -38,7 +39,7 @@ namespace Indigo.WebMatrix.Controllers
             {
                 try
                 {
-                    User user = SecurityService.SignUp(model.UserName, model.Password);
+                    SecurityService.SignUp(model.UserName, model.Password);
 
                     return RedirectToLocal(returnUrl);
                 }
@@ -126,7 +127,7 @@ namespace Indigo.WebMatrix.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = SecurityService.AddUser(model.UserName, model.Password, User);
+                User user = SecurityService.AddUser(model.UserName, model.Password, User);
 
                 TempData["Message"] = string.Format("用户【{0}】新增成功！", user.Name);
 
@@ -139,8 +140,8 @@ namespace Indigo.WebMatrix.Controllers
         [Function("修改权限", "设置用户的访问权限")]
         public ActionResult ChangePermissions(string id)
         {
-            var targetUser = SecurityService.GetUserById(id);
-            var allModules = MvcModuleService.GetModules();
+            User targetUser = SecurityService.GetUserById(id);
+            IList<Module> allModules = MvcModuleService.GetModules();
 
             var model = new ChangePermissionsModel(targetUser, allModules);
             return View(model);
@@ -149,7 +150,7 @@ namespace Indigo.WebMatrix.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult ChangePermissions(ChangePermissionsModel model)
         {
-            var targetUser = SecurityService.GetUserById(model.Id);
+            User targetUser = SecurityService.GetUserById(model.Id);
 
             if (ModelState.IsValid)
             {
@@ -169,16 +170,19 @@ namespace Indigo.WebMatrix.Controllers
         [Function("修改角色", "为用户分配角色")]
         public ActionResult ChangeRoles(string id)
         {
-            var model = new ChangeRolesModel();
-            model.Modules = MvcModuleService.GetModules();
-            model.Id = id;
+            var model = new ChangeRolesModel
+            {
+                Modules = MvcModuleService.GetModules(),
+                Id = id
+            };
+
             model.TargetUser = SecurityService.GetUserById(model.Id);
             model.AllRoles = SecurityService.GetAllRoles();
             model.SelectedRoleIds = model.TargetUser.GetRoles().Select(r => r.Id).ToList();
             model.RemainRoles = model.AllRoles
                 .Where(r => User.Contains(r))
                 .Where(r => !model.SelectedRoleIds.Contains(r.Id))
-                .Select(r => new SelectListItem { Text = r.Name, Value = r.Id });
+                .Select(r => new SelectListItem {Text = r.Name, Value = r.Id});
 
             return View(model);
         }
@@ -186,7 +190,7 @@ namespace Indigo.WebMatrix.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult ChangeRoles(ChangeRolesModel model)
         {
-            var targetUser = SecurityService.GetUserById(model.Id);
+            User targetUser = SecurityService.GetUserById(model.Id);
 
             if (ModelState.IsValid)
             {
@@ -211,7 +215,7 @@ namespace Indigo.WebMatrix.Controllers
             model.RemainRoles = model.AllRoles
                 .Where(r => User.Contains(r))
                 .Where(r => !model.SelectedRoleIds.Contains(r.Id))
-                .Select(r => new SelectListItem { Text = r.Name, Value = r.Id });
+                .Select(r => new SelectListItem {Text = r.Name, Value = r.Id});
 
             return View(model);
         }
@@ -227,7 +231,7 @@ namespace Indigo.WebMatrix.Controllers
         [ActionName("Delete"), HttpPost, ValidateAntiForgeryToken]
         public ActionResult DoDelete(string id)
         {
-            var targetUser = SecurityService.GetUserById(id);
+            User targetUser = SecurityService.GetUserById(id);
 
             SecurityService.DeleteUser(id, User);
 

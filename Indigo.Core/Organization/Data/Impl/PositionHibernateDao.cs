@@ -1,8 +1,9 @@
-﻿using Indigo.Infrastructure.Search;
+﻿using System.Collections.Generic;
+using Indigo.Infrastructure.Search;
 using Indigo.Organization.Search;
 using Indigo.Security.Data.Impl;
+using NHibernate;
 using Spring.Stereotype;
-using System.Collections.Generic;
 
 namespace Indigo.Organization.Data.Impl
 {
@@ -11,7 +12,7 @@ namespace Indigo.Organization.Data.Impl
     {
         public Position GetByName(string name)
         {
-            var query = CreateQuery("from Position where Name = :name").SetString("name", name);
+            IQuery query = CreateQuery("from Position where Name = :name").SetString("name", name);
             return query.UniqueResult<Position>();
         }
 
@@ -22,7 +23,7 @@ namespace Indigo.Organization.Data.Impl
 
         public Page<Position> Search(PositionSearchForm searchForm)
         {
-            var query = QueryOver();
+            IQueryOver<Position, Position> query = QueryOver();
 
             query = query.OrderBy(e => e.Rank).Asc;
 

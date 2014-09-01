@@ -1,19 +1,24 @@
-﻿using Indigo.Infrastructure;
-using Indigo.Infrastructure.Util;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Indigo.Infrastructure;
+using Indigo.Infrastructure.Support;
 
 namespace Indigo.Modules
 {
     public class Module : Entity<string>
     {
-        private ICollection<Component> components = new HashSet<Component>();
+        private ICollection<Component> _components = new HashSet<Component>();
 
         public virtual string Name { get; set; }
         public virtual string Title { get; set; }
         public virtual string Description { get; set; }
         public virtual int Ordinal { get; set; }
-        protected virtual ICollection<Component> Components { get { return components; } set { components = value; } }
+
+        protected virtual ICollection<Component> Components
+        {
+            get { return _components; }
+            set { _components = value; }
+        }
 
         public virtual void AddComponent(Component component)
         {
@@ -42,10 +47,10 @@ namespace Indigo.Modules
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
-            if (object.ReferenceEquals(this, obj)) return true;
-            if (!typeof(Module).IsInstanceOfType(obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (!(obj is Module)) return false;
 
-            var rhs = (Module)obj;
+            var rhs = (Module) obj;
             return new EqualsBuilder()
                 .Append(Name, rhs.Name)
                 .IsEquals();
@@ -56,6 +61,11 @@ namespace Indigo.Modules
             return new HashCodeBuilder()
                 .Append(Name)
                 .HashCode;
+        }
+
+        public override string ToString()
+        {
+            return Title ?? Name;
         }
     }
 }

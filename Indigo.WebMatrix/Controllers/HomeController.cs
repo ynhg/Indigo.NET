@@ -1,14 +1,17 @@
-﻿using Indigo.Modules.Attributes;
+﻿using System.Web.Mvc;
+using Indigo.Modules.Attributes;
 using Indigo.Security;
 using Indigo.Web.Mvc;
 using Spring.Objects.Factory.Attributes;
-using System.Web.Mvc;
 
 namespace Indigo.WebMatrix.Controllers
 {
     [Component("首页", null, true)]
     public class HomeController : BaseController
     {
+        [Autowired]
+        public ISecurityService SecurityService { get; set; }
+
         [Function("首页")]
         public ActionResult Index()
         {
@@ -26,8 +29,5 @@ namespace Indigo.WebMatrix.Controllers
         {
             return View();
         }
-
-        [Autowired]
-        public ISecurityService SecurityService { get; set; }
     }
 }

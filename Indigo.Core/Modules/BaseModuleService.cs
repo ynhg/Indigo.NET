@@ -1,13 +1,19 @@
-﻿using Indigo.Modules.Data;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using Indigo.Modules.Data;
 using Spring.Objects.Factory.Attributes;
 using Spring.Transaction.Interceptor;
-using System.Collections.Generic;
-using System.Reflection;
 
 namespace Indigo.Modules
 {
     public abstract class BaseModuleService : IModuleService
     {
+        [Autowired]
+        public IModuleDao ModuleDao { get; set; }
+
+        [Autowired]
+        public IComponentDao ComponentDao { get; set; }
+
         public abstract void BuildModules(params Assembly[] assemblies);
 
         [Transaction(ReadOnly = true)]
@@ -27,11 +33,5 @@ namespace Indigo.Modules
         {
             return ComponentDao.GetByName(name);
         }
-
-        [Autowired]
-        public IModuleDao ModuleDao { get; set; }
-
-        [Autowired]
-        public IComponentDao ComponentDao { get; set; }
     }
 }

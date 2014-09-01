@@ -1,50 +1,60 @@
-﻿using Common.Logging;
-using Indigo.Infrastructure.Util;
-using Spring.Context.Support;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading;
+using Common.Logging;
+using Indigo.Infrastructure.Util;
+using Spring.Context.Support;
 
 namespace Indigo.Security.Util
 {
     public static class SecurityUtils
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(SecurityUtils));
+        private static readonly ILog Log = LogManager.GetLogger(typeof (SecurityUtils));
 
-        private static IDictionary<string, DateTime> onlineUsers = new ConcurrentDictionary<string, DateTime>();
+        private static readonly IDictionary<string, DateTime> OnlineUsers = new ConcurrentDictionary<string, DateTime>();
 
-        [ThreadStatic]
-        private static User currentUser;
+        [ThreadStatic] private static User _currentUser;
+        private static ISecurityService _securityService;
 
         public static User CurrentUser
         {
             get
             {
-                var identity = Thread.CurrentPrincipal.Identity;
+                IIdentity identity = Thread.CurrentPrincipal.Identity;
 
-                if (currentUser == null || !ObjectUtils.Equals(currentUser.Identity, identity))
+                if (_currentUser == null || !ObjectUtils.Equals(_currentUser.Identity, identity))
                 {
-                    currentUser = SecurityService.GetUserById(identity.Name);
+                    _currentUser = SecurityService.GetUserById(identity.Name);
 
-                    if (currentUser != null)
-                        currentUser.Identity = identity;
+                    if (_currentUser != null)
+                        _currentUser.Identity = identity;
                 }
 
-                if (currentUser != null)
+                if (_currentUser != null)
                 {
-                    if (onlineUsers.ContainsKey(currentUser.Id))
+                    if (OnlineUsers.ContainsKey(_currentUser.Id))
                     {
-                        onlineUsers[currentUser.Id] = DateTime.Now;
+                        OnlineUsers[_currentUser.Id] = DateTime.Now;
                     }
                     else
                     {
-                        onlineUsers.Add(currentUser.Id, DateTime.Now);
+                        OnlineUsers.Add(_currentUser.Id, DateTime.Now);
                     }
                 }
 
-                return currentUser;
+                return _currentUser;
+            }
+        }
+
+        private static ISecurityService SecurityService
+        {
+            get
+            {
+                return _securityService ??
+                       (_securityService = ContextRegistry.GetContext().GetObject<ISecurityService>());
             }
         }
 
@@ -63,44 +73,30 @@ namespace Indigo.Security.Util
         public static void SignOut(User user)
         {
             SecurityService.SignOut(user);
-            onlineUsers.Remove(user.Id);
+            OnlineUsers.Remove(user.Id);
         }
 
         /// <summary>
         /// 注销所有给定时间内无任何活动的用户
         /// </summary>
-        /// <param name="Expires">过期时间:秒</param>
+        /// <param name="expires">过期时间:秒</param>
         public static void SignOut(int expires)
         {
-            log.DebugFormat("对{0}秒内无活动的用户进行批量注销", expires);
+            Log.DebugFormat("对{0}秒内无活动的用户进行批量注销", expires);
 
             DateTime now = DateTime.Now;
 
-            var expireUserIds = onlineUsers.Where(p => now.Subtract(p.Value).TotalSeconds >= expires).Select(p => p.Key).ToList();
+            List<string> expireUserIds =
+                OnlineUsers.Where(p => now.Subtract(p.Value).TotalSeconds >= expires).Select(p => p.Key).ToList();
 
-            foreach (var expireUserId in expireUserIds)
+            foreach (string expireUserId in expireUserIds)
             {
-                User expiredUser = securityService.GetUserById(expireUserId);
+                User expiredUser = _securityService.GetUserById(expireUserId);
 
                 SignOut(expiredUser);
             }
 
-            log.DebugFormat("用户批量注销结束, 共{0}个用户完成注销", expireUserIds.Count);
+            Log.DebugFormat("用户批量注销结束, 共{0}个用户完成注销", expireUserIds.Count);
         }
-
-        private static ISecurityService SecurityService
-        {
-            get
-            {
-                if (securityService == null)
-                {
-                    securityService = ContextRegistry.GetContext().GetObject<ISecurityService>();
-                }
-
-                return securityService;
-            }
-        }
-
-        private static ISecurityService securityService;
     }
 }

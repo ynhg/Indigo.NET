@@ -1,4 +1,5 @@
 ﻿using Indigo.Infrastructure.Data.Impl;
+using NHibernate;
 using Spring.Stereotype;
 
 namespace Indigo.Modules.Data.Impl
@@ -8,7 +9,7 @@ namespace Indigo.Modules.Data.Impl
     {
         public Component GetByName(string name)
         {
-            var query = CreateQuery("from Component where Name = :name").SetString("name", name);
+            IQuery query = CreateQuery("from Component where Name = :name").SetString("name", name);
             return query.SetCacheable(true).UniqueResult<Component>();
         }
     }

@@ -1,6 +1,6 @@
-﻿using Indigo.Modules;
-using Indigo.Security;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Indigo.Modules;
 
 namespace Indigo.Security.Util
 {
@@ -8,12 +8,7 @@ namespace Indigo.Security.Util
     {
         public static bool IsPermitted(this IEnumerable<Role> roles, Function function)
         {
-            foreach (var r in roles)
-            {
-                if (r.IsPermitted(function)) return true;
-            }
-
-            return false;
+            return roles.Any(r => r.IsPermitted(function));
         }
     }
 }

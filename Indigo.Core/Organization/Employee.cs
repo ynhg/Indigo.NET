@@ -1,5 +1,5 @@
-﻿using Indigo.Security;
-using System;
+﻿using System;
+using Indigo.Security;
 
 namespace Indigo.Organization
 {
@@ -17,8 +17,6 @@ namespace Indigo.Organization
         public virtual Department Department { get; set; }
         public virtual Position Position { get; set; }
         public virtual User User { get; set; }
-
-        public Employee() { }
 
         public virtual void SetIdentityCardNumber(string identityCardNumber)
         {

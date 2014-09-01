@@ -1,5 +1,6 @@
 ﻿using Indigo.Infrastructure.Search;
 using Indigo.Security.Search;
+using NHibernate;
 using NHibernate.Criterion;
 using Spring.Stereotype;
 
@@ -10,7 +11,7 @@ namespace Indigo.Security.Data.Impl
     {
         public Page<User> Search(UserSearchForm searchForm)
         {
-            var query = QueryOver();
+            IQueryOver<User, User> query = QueryOver();
 
             if (!string.IsNullOrWhiteSpace(searchForm.Name))
             {
@@ -24,7 +25,7 @@ namespace Indigo.Security.Data.Impl
 
         public User GetByName(string name)
         {
-            var query = CreateQuery("from User where Name = :name").SetString("name", name);
+            IQuery query = CreateQuery("from User where Name = :name").SetString("name", name);
             return query.UniqueResult<User>();
         }
     }

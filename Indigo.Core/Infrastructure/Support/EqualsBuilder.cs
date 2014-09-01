@@ -1,42 +1,42 @@
-﻿namespace Indigo.Infrastructure.Util
+﻿namespace Indigo.Infrastructure.Support
 {
     public sealed class EqualsBuilder
     {
-        private bool equals;
+        private bool _equals;
 
         public EqualsBuilder()
         {
-            equals = true;
+            _equals = true;
         }
 
         public EqualsBuilder AppendBase(bool baseEquals)
         {
-            if (equals == false) return this;
+            if (_equals == false) return this;
 
-            equals = baseEquals;
+            _equals = baseEquals;
             return this;
         }
 
         public EqualsBuilder Append(object lhs, object rhs)
         {
-            if (equals == false) return this;
+            if (_equals == false) return this;
 
-            if (object.ReferenceEquals(lhs, rhs)) return this;
+            if (ReferenceEquals(lhs, rhs)) return this;
 
             if (lhs == null || rhs == null)
             {
-                equals = false;
+                _equals = false;
                 return this;
             }
 
-            equals = lhs.Equals(rhs);
+            _equals = lhs.Equals(rhs);
 
             return this;
         }
 
         public bool IsEquals()
         {
-            return equals;
+            return _equals;
         }
     }
 }

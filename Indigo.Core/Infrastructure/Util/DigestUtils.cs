@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -186,11 +187,11 @@ namespace Indigo.Infrastructure.Util
             return Encoding.UTF8.GetBytes(data);
         }
 
-        private static string GetHexString(byte[] data)
+        private static string GetHexString(IEnumerable<byte> data)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
-            foreach (int b in data)
+            foreach (byte b in data)
             {
                 sb.AppendFormat("{0:x2}", b);
             }

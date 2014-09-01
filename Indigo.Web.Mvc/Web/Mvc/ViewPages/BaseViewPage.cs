@@ -1,7 +1,7 @@
-﻿using Indigo.Modules;
+﻿using System.Web.Mvc;
+using Indigo.Modules;
 using Indigo.Security;
 using Indigo.Security.Util;
-using System.Web.Mvc;
 
 namespace Indigo.Web.Mvc.ViewPages
 {
@@ -14,7 +14,7 @@ namespace Indigo.Web.Mvc.ViewPages
                 var baseController = ViewContext.Controller as BaseController;
                 if (baseController != null)
                 {
-                    var functionName = ViewContext.RouteData.GetRequiredString("action");
+                    string functionName = ViewContext.RouteData.GetRequiredString("action");
                     return baseController.Component.GetFunction(functionName);
                 }
 
@@ -22,7 +22,7 @@ namespace Indigo.Web.Mvc.ViewPages
             }
         }
 
-        public virtual new User User
+        public new virtual User User
         {
             get { return SecurityUtils.CurrentUser; }
         }
@@ -37,7 +37,7 @@ namespace Indigo.Web.Mvc.ViewPages
                 var baseController = ViewContext.Controller as BaseController;
                 if (baseController != null)
                 {
-                    var functionName = ViewContext.RouteData.GetRequiredString("action");
+                    string functionName = ViewContext.RouteData.GetRequiredString("action");
                     return baseController.Component.GetFunction(functionName);
                 }
 
@@ -45,7 +45,7 @@ namespace Indigo.Web.Mvc.ViewPages
             }
         }
 
-        public virtual new User User
+        public new virtual User User
         {
             get { return SecurityUtils.CurrentUser; }
         }

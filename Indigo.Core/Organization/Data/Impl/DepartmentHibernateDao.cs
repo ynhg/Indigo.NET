@@ -1,6 +1,8 @@
-﻿using Indigo.Infrastructure.Search;
+﻿using System.Collections.Generic;
+using Indigo.Infrastructure.Search;
 using Indigo.Organization.Search;
 using Indigo.Security.Data.Impl;
+using NHibernate;
 using Spring.Stereotype;
 
 namespace Indigo.Organization.Data.Impl
@@ -10,13 +12,17 @@ namespace Indigo.Organization.Data.Impl
     {
         public Department GetByName(string name)
         {
-            var query = CreateQuery("from Department where Name = :name").SetString("name", name);
-            return query.UniqueResult<Department>();
+            return QueryOver().Where(d => d.Name == name).SingleOrDefault();
+        }
+
+        public IList<Department> FindAll(string superDepartmentId)
+        {
+            return QueryOver().Where(d => d.SuperDepartment.Id == superDepartmentId).List();
         }
 
         public Page<Department> Search(DepartmentSearchForm searchForm)
         {
-            var query = QueryOver();
+            IQueryOver<Department, Department> query = QueryOver();
 
             query = query.OrderBy(e => e.Ordinal).Desc;
 

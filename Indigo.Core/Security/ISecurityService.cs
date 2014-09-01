@@ -1,6 +1,6 @@
-﻿using Indigo.Infrastructure.Search;
+﻿using System.Collections.Generic;
+using Indigo.Infrastructure.Search;
 using Indigo.Security.Search;
-using System.Collections.Generic;
 
 namespace Indigo.Security
 {

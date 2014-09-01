@@ -1,7 +1,7 @@
-﻿using Indigo.Infrastructure.Search;
+﻿using System.Collections.Generic;
+using Indigo.Infrastructure.Search;
 using Indigo.Organization.Search;
 using Indigo.Security;
-using System.Collections.Generic;
 
 namespace Indigo.Organization
 {
@@ -11,6 +11,7 @@ namespace Indigo.Organization
         Department GetDepartmentById(string id);
         Department GetDepartmentById(string id, User oper);
         Department GetDepartmentByName(string name);
+        IList<Department> GetRootDepartments();
         IList<Department> GetDepartments();
         IList<Department> GetDepartments(User oper);
         Page<Department> Search(DepartmentSearchForm searchForm);

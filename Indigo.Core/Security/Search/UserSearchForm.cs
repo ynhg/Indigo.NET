@@ -1,5 +1,5 @@
-﻿using Indigo.Infrastructure.Search;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Indigo.Infrastructure.Search;
 
 namespace Indigo.Security.Search
 {

@@ -1,18 +1,18 @@
-﻿using Indigo.Infrastructure.Util;
+﻿using Indigo.Infrastructure.Support;
 
 namespace Indigo.Infrastructure
 {
-    public abstract class Entity<ID>
+    public abstract class Entity<TId>
     {
-        public virtual ID Id { get; protected set; }
+        public virtual TId Id { get; protected set; }
 
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
-            if (object.ReferenceEquals(this, obj)) return true;
-            if (!typeof(Entity<ID>).IsInstanceOfType(obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (!(obj is Entity<TId>)) return false;
 
-            var rhs = (Entity<ID>)obj;
+            var rhs = (Entity<TId>) obj;
             return new EqualsBuilder()
                 .Append(Id, rhs.Id)
                 .IsEquals();

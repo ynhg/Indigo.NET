@@ -1,10 +1,10 @@
-﻿using Indigo.Modules.Attributes;
+﻿using System.Web.Mvc;
+using Indigo.Modules.Attributes;
 using Indigo.Organization;
 using Indigo.Organization.Search;
 using Indigo.Web.Mvc;
 using Indigo.WebMatrix.Models.PositionModels;
 using Spring.Objects.Factory.Attributes;
-using System.Web.Mvc;
 
 namespace Indigo.WebMatrix.Controllers
 {
@@ -46,6 +46,7 @@ namespace Indigo.WebMatrix.Controllers
         public JsonResult IsNameUnique(string name, string id)
         {
             Position position = OrganizationService.GetPositionByName(name);
+
             return Json(position == null || position.Id == id, JsonRequestBehavior.AllowGet);
         }
     }

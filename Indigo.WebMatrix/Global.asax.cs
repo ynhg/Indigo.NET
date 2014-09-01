@@ -1,10 +1,10 @@
-﻿using Indigo.Modules;
-using Indigo.Security;
-using Indigo.Web.Mvc;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Indigo.Modules;
+using Indigo.Security;
+using Indigo.Web.Mvc;
 
 namespace Indigo.WebMatrix
 {
@@ -30,11 +30,7 @@ namespace Indigo.WebMatrix
 
             if (admins.GetUsers().Count == 0)
             {
-                User admin = securityService.GetUserByName("admin");
-                if (admin == null)
-                {
-                    admin = securityService.AddUser("admin", "111111", null);
-                }
+                User admin = securityService.GetUserByName("admin") ?? securityService.AddUser("admin", "111111", null);
                 securityService.GrantUserRole(admin.Id, admins.Id);
             }
         }

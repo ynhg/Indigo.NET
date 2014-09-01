@@ -1,8 +1,5 @@
-﻿using Indigo.Security;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using Indigo.Security;
 
 namespace Indigo.Organization
 {

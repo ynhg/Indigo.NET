@@ -1,5 +1,5 @@
 ﻿using Indigo.Infrastructure;
-using Indigo.Infrastructure.Util;
+using Indigo.Infrastructure.Support;
 
 namespace Indigo.Modules
 {
@@ -15,10 +15,10 @@ namespace Indigo.Modules
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
-            if (object.ReferenceEquals(this, obj)) return true;
-            if (!typeof(Function).IsInstanceOfType(obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (!(obj is Function)) return false;
 
-            var rhs = (Function)obj;
+            var rhs = (Function) obj;
             return new EqualsBuilder()
                 .Append(Component, rhs.Component)
                 .Append(Name, rhs.Name)
@@ -33,6 +33,11 @@ namespace Indigo.Modules
                 .Append(Name)
                 .Append(Protect)
                 .HashCode;
+        }
+
+        public override string ToString()
+        {
+            return Title ?? Name;
         }
     }
 }

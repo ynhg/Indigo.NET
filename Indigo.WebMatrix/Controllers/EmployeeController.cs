@@ -1,12 +1,12 @@
-﻿using Indigo.Modules.Attributes;
+﻿using System.Linq;
+using System.Web.Mvc;
+using Indigo.Modules.Attributes;
 using Indigo.Organization;
 using Indigo.Organization.Search;
 using Indigo.Web.Mvc;
 using Indigo.Web.Mvc.Util;
 using Indigo.WebMatrix.Models.EmployeeModels;
 using Spring.Objects.Factory.Attributes;
-using System.Web.Mvc;
-using System.Linq;
 
 namespace Indigo.WebMatrix.Controllers
 {
@@ -27,9 +27,9 @@ namespace Indigo.WebMatrix.Controllers
         [Function("新增员工")]
         public ActionResult Add()
         {
-            ViewBag.Genders = HtmlUtils.GetSelectList(typeof(Gender));
-            ViewBag.Departments = OrganizationService.GetDepartments().Select(d => new SelectListItem { Text = d.Name, Value = d.Id });
-            ViewBag.Positions = OrganizationService.GetPositions().Select(p => new SelectListItem { Text = p.Name, Value = p.Id });
+            ViewBag.Genders = HtmlUtils.GetSelectList(typeof (Gender));
+            ViewBag.Departments = OrganizationService.GetDepartments().Select(d => new SelectListItem {Text = d.Name, Value = d.Id});
+            ViewBag.Positions = OrganizationService.GetPositions().Select(p => new SelectListItem {Text = p.Name, Value = p.Id});
 
             return View();
         }
@@ -39,18 +39,20 @@ namespace Indigo.WebMatrix.Controllers
         {
             if (ModelState.IsValid)
             {
-                Employee employee = new Employee();
-                employee.Number = model.Number;
-                employee.Name = model.Name;
-                employee.Gender = model.Gender;
-                employee.Birthday = model.Birthday;
-                employee.Age = model.Age;
+                var employee = new Employee
+                {
+                    Number = model.Number,
+                    Name = model.Name,
+                    Gender = model.Gender,
+                    Birthday = model.Birthday,
+                    Age = model.Age
+                };
 
                 if (!string.IsNullOrWhiteSpace(model.IdentityCardNumber))
                     employee.SetIdentityCardNumber(model.IdentityCardNumber);
 
-                Department department = OrganizationService.GetDepartmentById(model.DepartmentId);
-                Position position = OrganizationService.GetPositionById(model.PositionId);
+                Department department = model.DepartmentId != null ? OrganizationService.GetDepartmentById(model.DepartmentId) : null;
+                Position position = model.PositionId != null ? OrganizationService.GetPositionById(model.PositionId) : null;
 
                 OrganizationService.AddEmployee(employee, department, position, User);
 
@@ -59,9 +61,9 @@ namespace Indigo.WebMatrix.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Genders = HtmlUtils.GetSelectList(typeof(Gender));
-            ViewBag.Departments = OrganizationService.GetDepartments().Select(d => new SelectListItem { Text = d.Name, Value = d.Id });
-            ViewBag.Positions = OrganizationService.GetPositions().Select(p => new SelectListItem { Text = p.Name, Value = p.Id });
+            ViewBag.Genders = HtmlUtils.GetSelectList(typeof (Gender));
+            ViewBag.Departments = OrganizationService.GetDepartments().Select(d => new SelectListItem {Text = d.Name, Value = d.Id});
+            ViewBag.Positions = OrganizationService.GetPositions().Select(p => new SelectListItem {Text = p.Name, Value = p.Id});
 
             return View(model);
         }

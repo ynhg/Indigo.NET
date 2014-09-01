@@ -1,14 +1,11 @@
-﻿using Indigo.Modules.Attributes;
+﻿using System.Linq;
+using System.Web.Mvc;
+using Indigo.Modules.Attributes;
 using Indigo.Organization;
 using Indigo.Organization.Search;
 using Indigo.Web.Mvc;
 using Indigo.WebMatrix.Models.DepartmentModels;
 using Spring.Objects.Factory.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 namespace Indigo.WebMatrix.Controllers
 {
@@ -22,6 +19,7 @@ namespace Indigo.WebMatrix.Controllers
         public ActionResult Index(DepartmentSearchForm searchForm)
         {
             ViewBag.SearchResult = OrganizationService.Search(searchForm);
+            ViewBag.RootDepartments = OrganizationService.GetRootDepartments();
 
             return View(searchForm);
         }
@@ -29,8 +27,7 @@ namespace Indigo.WebMatrix.Controllers
         [Function("新增部门", "创建新的部门")]
         public ActionResult Add()
         {
-            ViewBag.Departments = OrganizationService.GetDepartments(User)
-                .Select(d => new SelectListItem { Text = d.Name, Value = d.Id });
+            ViewBag.Departments = OrganizationService.GetDepartments(User).Select(d => new SelectListItem {Text = d.Name, Value = d.Id});
 
             return View();
         }
@@ -40,8 +37,8 @@ namespace Indigo.WebMatrix.Controllers
         {
             if (ModelState.IsValid)
             {
-                var superDepartment = model.SuperDepartmentId != null ? OrganizationService.GetDepartmentById(model.SuperDepartmentId, User) : null;
-                var department = OrganizationService.AddDepartment(model.Name, model.Description, superDepartment, 0, User);
+                Department superDepartment = model.SuperDepartmentId != null ? OrganizationService.GetDepartmentById(model.SuperDepartmentId, User) : null;
+                Department department = OrganizationService.AddDepartment(model.Name, model.Description, superDepartment, 0, User);
 
                 TempData["Message"] = string.Format("部门【{0}】新增成功！", department.Name);
 
@@ -53,7 +50,8 @@ namespace Indigo.WebMatrix.Controllers
 
         public JsonResult IsNameUnique(string name, string id)
         {
-            var department = OrganizationService.GetDepartmentByName(name);
+            Department department = OrganizationService.GetDepartmentByName(name);
+
             return Json(department == null || department.Id == id, JsonRequestBehavior.AllowGet);
         }
     }

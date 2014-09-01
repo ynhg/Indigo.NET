@@ -1,20 +1,30 @@
-﻿using Indigo.Infrastructure.Util;
-using Indigo.Modules;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Indigo.Infrastructure.Support;
+using Indigo.Modules;
 
 namespace Indigo.Security
 {
     public class Role : UserEntity<string>
     {
-        private ICollection<Function> functions = new HashSet<Function>();
-        private ICollection<User> users = new HashSet<User>();
+        private ICollection<Function> _functions = new HashSet<Function>();
+        private ICollection<User> _users = new HashSet<User>();
 
         public virtual bool IsAdmin { get; set; }
         public virtual string Name { get; set; }
         public virtual string Description { get; set; }
-        protected virtual ICollection<Function> Functions { get { return functions; } set { functions = value; } }
-        protected internal virtual ICollection<User> Users { get { return users; } set { users = value; } }
+
+        protected virtual ICollection<Function> Functions
+        {
+            get { return _functions; }
+            set { _functions = value; }
+        }
+
+        protected internal virtual ICollection<User> Users
+        {
+            get { return _users; }
+            set { _users = value; }
+        }
 
         public virtual bool IsPermitted(Function function)
         {
@@ -29,13 +39,7 @@ namespace Indigo.Security
 
             if (Functions.Count <= role.Functions.Count) return false;
 
-            foreach (Function function in role.Functions)
-            {
-                if (!Functions.Contains(function))
-                    return false;
-            }
-
-            return true;
+            return role.Functions.All(function => Functions.Contains(function));
         }
 
         public virtual ICollection<User> GetUsers()
@@ -66,10 +70,10 @@ namespace Indigo.Security
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
-            if (object.ReferenceEquals(this, obj)) return true;
-            if (!typeof(Role).IsInstanceOfType(obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (!(obj is Role)) return false;
 
-            var rhs = (Role)obj;
+            var rhs = (Role) obj;
             return new EqualsBuilder()
                 .Append(Name, rhs.Name)
                 .IsEquals();

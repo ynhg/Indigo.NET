@@ -1,7 +1,7 @@
-﻿using Indigo.Infrastructure.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Indigo.Infrastructure.Util;
 
 namespace Indigo.Web.Mvc.Util
 {
@@ -13,18 +13,18 @@ namespace Indigo.Web.Mvc.Util
 
             if (enumType.IsEnum)
             {
-                var elems = Enum.GetValues(enumType);
+                Array elems = Enum.GetValues(enumType);
 
                 if (defaultValue == null)
-                    defaultValue = (Enum)elems.GetValue(0);
+                    defaultValue = (Enum) elems.GetValue(0);
 
-                foreach (var elem in elems)
+                foreach (Object elem in elems)
                 {
                     string text = elem.GetDescription();
                     string value = elem.ToString();
-                    bool selected = Enum.Equals(elem, defaultValue);
+                    bool selected = Equals(elem, defaultValue);
 
-                    result.Add(new SelectListItem { Text = text, Value = value, Selected = selected });
+                    result.Add(new SelectListItem {Text = text, Value = value, Selected = selected});
                 }
             }
 

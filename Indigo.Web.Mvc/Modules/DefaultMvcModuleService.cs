@@ -1,40 +1,46 @@
-﻿using Indigo.Infrastructure.Util;
-using Indigo.Modules.Attributes;
-using Spring.Transaction.Interceptor;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
+using Indigo.Infrastructure.Util;
+using Indigo.Modules.Attributes;
+using Spring.Stereotype;
+using Spring.Transaction.Interceptor;
+using ComponentAttribute = Indigo.Modules.Attributes.ComponentAttribute;
 
 namespace Indigo.Modules
 {
-    [Spring.Stereotype.Service]
+    [Service]
     public class DefaultMvcModuleService : BaseModuleService, IMvcModuleService
     {
-        private const string DEFAULT_MODULE_NAME = "default";
-        private const string DEFAULT_MODULE_TITLE = "默认";
-        private const string DEFAULT_AREA = "default";
+        private const string DefaultModuleName = "default";
+        private const string DefaultModuleTitle = "默认";
+        private const string DefaultArea = "default";
 
-        private readonly object lockObject = new object();
-        private IDictionary<string, IDictionary<string, Component>> componentDict = new Dictionary<string, IDictionary<string, Component>>();
+        private readonly IDictionary<string, IDictionary<string, Component>> _componentDict =
+            new Dictionary<string, IDictionary<string, Component>>();
+
+        private readonly object _lockObject = new object();
 
         [Transaction]
         public override void BuildModules(params Assembly[] assemblies)
         {
-            lock (lockObject)
+            lock (_lockObject)
             {
-                Module defaultModule = GetModule(DEFAULT_MODULE_NAME);
+                Module defaultModule = GetModule(DefaultModuleName);
                 if (defaultModule == null)
                 {
-                    defaultModule = new Module();
-                    defaultModule.Name = DEFAULT_MODULE_NAME;
-                    defaultModule.Title = DEFAULT_MODULE_TITLE;
+                    defaultModule = new Module
+                    {
+                        Name = DefaultModuleName,
+                        Title = DefaultModuleTitle
+                    };
 
                     ModuleDao.Save(defaultModule);
                 }
 
-                componentDict.Clear();
+                _componentDict.Clear();
 
                 IList<Component> allComponents = ComponentDao.FindAll();
 
@@ -43,25 +49,29 @@ namespace Indigo.Modules
                     Type[] allTypes = assembly.GetTypes();
 
                     IDictionary<string, string> namespaceAreas = new Dictionary<string, string>();
-                    var areaRegistrationTypes = allTypes.Where(t => t.IsSubclassOf(typeof(AreaRegistration)));
+                    IEnumerable<Type> areaRegistrationTypes =
+                        allTypes.Where(t => t.IsSubclassOf(typeof (AreaRegistration)));
                     foreach (Type areaRegistrationType in areaRegistrationTypes)
                     {
                         string ns = areaRegistrationType.Namespace;
-                        string area = ((AreaRegistration)Activator.CreateInstance(areaRegistrationType)).AreaName;
+                        string area = ((AreaRegistration) Activator.CreateInstance(areaRegistrationType)).AreaName;
 
                         namespaceAreas.Add(ns, area);
                     }
 
-                    var controllerTypes = allTypes.Where(t => t.IsSubclassOf(typeof(Controller)) && !t.IsAbstract);
+                    IEnumerable<Type> controllerTypes =
+                        allTypes.Where(t => t.IsSubclassOf(typeof (Controller)) && !t.IsAbstract);
                     foreach (Type controllerType in controllerTypes)
                     {
                         ControllerDescriptor controllerDescriptor = new ReflectedControllerDescriptor(controllerType);
                         string typeName = controllerType.FullName;
-                        var component = allComponents.SingleOrDefault(c => c.Name == typeName);
+                        Component component = allComponents.SingleOrDefault(c => c.Name == typeName);
                         if (component == null)
                         {
-                            component = new Component();
-                            component.Name = typeName;
+                            component = new Component
+                            {
+                                Name = typeName
+                            };
                             defaultModule.AddComponent(component);
 
                             ComponentDao.Save(component);
@@ -69,17 +79,22 @@ namespace Indigo.Modules
                             allComponents.Add(component);
                         }
 
-                        string area = StringUtils.ToLowerCase((from nsa in namespaceAreas where typeName.StartsWith(nsa.Key) select nsa.Value).SingleOrDefault()) ?? DEFAULT_AREA;
-                        if (!componentDict.ContainsKey(area))
-                            componentDict.Add(area, new Dictionary<string, Component>());
+                        string area =
+                            StringUtils.ToLowerCase(
+                                (from nsa in namespaceAreas where typeName.StartsWith(nsa.Key) select nsa.Value)
+                                    .SingleOrDefault()) ?? DefaultArea;
+                        if (!_componentDict.ContainsKey(area))
+                            _componentDict.Add(area, new Dictionary<string, Component>());
 
-                        componentDict[area].Add(StringUtils.ToLowerCase(controllerDescriptor.ControllerName), component);
+                        _componentDict[area].Add(StringUtils.ToLowerCase(controllerDescriptor.ControllerName), component);
 
                         bool componentProtect = false;
 
-                        if (controllerDescriptor.IsDefined(typeof(ComponentAttribute), false))
+                        if (controllerDescriptor.IsDefined(typeof (ComponentAttribute), false))
                         {
-                            var componentAttribute = (ComponentAttribute)controllerDescriptor.GetCustomAttributes(typeof(ComponentAttribute), false)[0];
+                            var componentAttribute =
+                                (ComponentAttribute)
+                                    controllerDescriptor.GetCustomAttributes(typeof (ComponentAttribute), false)[0];
                             component.Title = componentAttribute.Title;
                             component.Description = componentAttribute.Description;
                             component.Ordinal = componentAttribute.Ordinal;
@@ -88,29 +103,37 @@ namespace Indigo.Modules
 
                         int defaultOrdinal = 1;
 
-                        foreach (var actionDescriptor in controllerDescriptor.GetCanonicalActions())
+                        foreach (ActionDescriptor actionDescriptor in controllerDescriptor.GetCanonicalActions())
                         {
                             string functionName = actionDescriptor.ActionName;
-                            if (actionDescriptor.IsDefined(typeof(ActionNameAttribute), false))
+                            if (actionDescriptor.IsDefined(typeof (ActionNameAttribute), false))
                             {
-                                var actionNameAttribute = (ActionNameAttribute)actionDescriptor.GetCustomAttributes(typeof(ActionNameAttribute), false)[0];
+                                var actionNameAttribute =
+                                    (ActionNameAttribute)
+                                        actionDescriptor.GetCustomAttributes(typeof (ActionNameAttribute), false)[0];
                                 functionName = actionNameAttribute.Name;
                             }
 
-                            var function = component.GetFunction(functionName);
+                            Function function = component.GetFunction(functionName);
                             if (function == null)
                             {
-                                function = new Function();
-                                function.Name = functionName;
+                                function = new Function
+                                {
+                                    Name = functionName
+                                };
 
                                 component.AddFunction(function);
                             }
 
-                            if (actionDescriptor.IsDefined(typeof(FunctionAttribute), false))
+                            if (actionDescriptor.IsDefined(typeof (FunctionAttribute), false))
                             {
-                                var functionAttribute = (FunctionAttribute)actionDescriptor.GetCustomAttributes(typeof(FunctionAttribute), false)[0];
+                                var functionAttribute =
+                                    (FunctionAttribute)
+                                        actionDescriptor.GetCustomAttributes(typeof (FunctionAttribute), false)[0];
 
-                                function.Protect = functionAttribute.Protect.HasValue ? functionAttribute.Protect.Value : componentProtect;
+                                function.Protect = functionAttribute.Protect.HasValue
+                                    ? functionAttribute.Protect.Value
+                                    : componentProtect;
 
                                 if (functionAttribute.Title != null)
                                     function.Title = functionAttribute.Title;
@@ -118,10 +141,9 @@ namespace Indigo.Modules
                                 if (functionAttribute.Description != null)
                                     function.Description = functionAttribute.Description;
 
-                                if (functionAttribute.Ordinal > 0)
-                                    function.Ordinal = functionAttribute.Ordinal;
-                                else
-                                    function.Ordinal = defaultOrdinal++;
+                                function.Ordinal = functionAttribute.Ordinal > 0
+                                    ? functionAttribute.Ordinal
+                                    : defaultOrdinal++;
                             }
                         }
                     }
@@ -132,12 +154,12 @@ namespace Indigo.Modules
         [Transaction(ReadOnly = true)]
         public Component GetComponent(string controllerName, string area)
         {
-            lock (lockObject)
+            lock (_lockObject)
             {
-                area = StringUtils.ToLowerCase(area) ?? DEFAULT_AREA;
-                if (componentDict.ContainsKey(area))
+                area = StringUtils.ToLowerCase(area) ?? DefaultArea;
+                if (_componentDict.ContainsKey(area))
                 {
-                    var subComponentDict = componentDict[area];
+                    IDictionary<string, Component> subComponentDict = _componentDict[area];
                     controllerName = StringUtils.ToLowerCase(controllerName);
 
                     if (subComponentDict.ContainsKey(controllerName))

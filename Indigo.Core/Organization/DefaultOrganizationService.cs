@@ -1,11 +1,11 @@
-﻿using Indigo.Infrastructure.Search;
+﻿using System.Collections.Generic;
+using Indigo.Infrastructure.Search;
 using Indigo.Organization.Data;
 using Indigo.Organization.Search;
 using Indigo.Security;
 using Spring.Objects.Factory.Attributes;
 using Spring.Stereotype;
 using Spring.Transaction.Interceptor;
-using System.Collections.Generic;
 
 namespace Indigo.Organization
 {
@@ -22,13 +22,16 @@ namespace Indigo.Organization
         public IEmployeeDao EmployeeDao { get; set; }
 
         [Transaction]
-        public Department AddDepartment(string name, string description, Department superDepartment, int ordinal, User oper)
+        public Department AddDepartment(string name, string description, Department superDepartment, int ordinal,
+            User oper)
         {
-            Department newDepartment = new Department();
-            newDepartment.Name = name;
-            newDepartment.Description = description;
-            newDepartment.SuperDepartment = superDepartment;
-            newDepartment.Ordinal = ordinal;
+            var newDepartment = new Department
+            {
+                Name = name,
+                Description = description,
+                SuperDepartment = superDepartment,
+                Ordinal = ordinal
+            };
 
             DepartmentDao.Save(newDepartment, oper);
 
@@ -54,6 +57,12 @@ namespace Indigo.Organization
         }
 
         [Transaction(ReadOnly = true)]
+        public IList<Department> GetRootDepartments()
+        {
+            return DepartmentDao.FindAll(null);
+        }
+
+        [Transaction(ReadOnly = true)]
         public IList<Department> GetDepartments()
         {
             return DepartmentDao.FindAll();
@@ -74,7 +83,7 @@ namespace Indigo.Organization
         [Transaction]
         public Position AddPosition(string name, int rank, User oper)
         {
-            Position position = new Position(name, rank);
+            var position = new Position(name, rank);
 
             PositionDao.Save(position, oper);
 

@@ -1,4 +1,6 @@
-﻿using Common.Logging;
+﻿using System;
+using System.Collections.Generic;
+using Common.Logging;
 using Indigo.Infrastructure.Search;
 using Indigo.Modules;
 using Indigo.Modules.Data;
@@ -9,22 +11,34 @@ using Indigo.Security.Support;
 using Spring.Objects.Factory.Attributes;
 using Spring.Stereotype;
 using Spring.Transaction.Interceptor;
-using System;
-using System.Collections.Generic;
 
 namespace Indigo.Security
 {
     [Service]
     public class DefaultSecurityService : ISecurityService
     {
-        private static readonly ILog log = LogManager.GetLogger<DefaultSecurityService>();
+        private static readonly ILog Log = LogManager.GetLogger<DefaultSecurityService>();
+
+        [Autowired]
+        public IEncryptor Encryptor { get; set; }
+
+        [Autowired]
+        public IUserDao UserDao { get; set; }
+
+        [Autowired]
+        public IRoleDao RoleDao { get; set; }
+
+        [Autowired]
+        public IFunctionDao FunctionDao { get; set; }
 
         [Transaction]
         public User SignUp(string name, string password)
         {
-            User newUser = new User();
-            newUser.Name = name;
-            newUser.Password = Encryptor.Encrypt(password);
+            var newUser = new User
+            {
+                Name = name,
+                Password = Encryptor.Encrypt(password)
+            };
 
             UserDao.Save(newUser);
 
@@ -40,23 +54,20 @@ namespace Indigo.Security
             {
                 throw new UnkownUserNameException(name);
             }
-            else
+            Log.DebugFormat("找到用户名 [{0}] 对应的用户 [{1}].", name, user);
+
+            if (user.Password != Encryptor.Encrypt(password))
             {
-                log.DebugFormat("找到用户名 [{0}] 对应的用户 [{1}].", name, user);
+                throw new IncorrectPasswordException(name);
+            }
 
-                if (user.Password != Encryptor.Encrypt(password))
-                {
-                    throw new IncorrectPasswordException(name);
-                }
+            if (!user.IsOnline)
+            {
+                user.IsOnline = true;
+                user.LastSignInTime = DateTime.Now;
+                user.TotalSignInCount += 1;
 
-                if (!user.IsOnline)
-                {
-                    user.IsOnline = true;
-                    user.LastSignInTime = DateTime.Now;
-                    user.TotalSignInCount += 1;
-
-                    log.InfoFormat("用户 [{0}] 于 [{1}] 登入.", name, user.LastSignInTime);
-                }
+                Log.InfoFormat("用户 [{0}] 于 [{1}] 登入.", name, user.LastSignInTime);
             }
 
             return user;
@@ -65,21 +76,23 @@ namespace Indigo.Security
         [Transaction]
         public virtual void SignOut(User user)
         {
-            log.DebugFormat("开始对用户[{0}]进行注销", user);
+            Log.DebugFormat("开始对用户[{0}]进行注销", user);
 
             if (user != null && user.IsOnline)
             {
                 user.IsOnline = false;
                 user.LastSignOutTime = DateTime.Now;
-                user.TotalOnlineTime += user.LastSignOutTime.Value - user.LastSignInTime.Value;
+
+                if (user.LastSignInTime != null)
+                    user.TotalOnlineTime += user.LastSignOutTime.Value - user.LastSignInTime.Value;
 
                 UserDao.Update(user);
 
-                log.InfoFormat("用户 [{0}] 于 [{1}] 成功注销", user.Name, user.LastSignOutTime);
+                Log.InfoFormat("用户 [{0}] 于 [{1}] 成功注销", user.Name, user.LastSignOutTime);
             }
             else
             {
-                log.DebugFormat("用户[{0}]不满足注销条件, 注销失败", user);
+                Log.DebugFormat("用户[{0}]不满足注销条件, 注销失败", user);
             }
         }
 
@@ -104,9 +117,11 @@ namespace Indigo.Security
         [Transaction]
         public User AddUser(string name, string password, User oper)
         {
-            User newUser = new User();
-            newUser.Name = name;
-            newUser.Password = Encryptor.Encrypt(password);
+            var newUser = new User
+            {
+                Name = name,
+                Password = Encryptor.Encrypt(password)
+            };
 
             UserDao.Save(newUser, oper);
 
@@ -225,12 +240,7 @@ namespace Indigo.Security
         [Transaction]
         public Role GetAdminRole()
         {
-            Role adminRole = RoleDao.GetAdminRole();
-
-            if (adminRole == null)
-            {
-                adminRole = AddAdminRole("超级管理员", "拥有系统全部权限的超级角色");
-            }
+            Role adminRole = RoleDao.GetAdminRole() ?? AddAdminRole("超级管理员", "拥有系统全部权限的超级角色");
 
             foreach (Function function in FunctionDao.FindAll())
             {
@@ -255,10 +265,12 @@ namespace Indigo.Security
         [Transaction]
         public Role AddAdminRole(string name, string description)
         {
-            var newAdminRole = new Role();
-            newAdminRole.IsAdmin = true;
-            newAdminRole.Name = name;
-            newAdminRole.Description = description;
+            var newAdminRole = new Role
+            {
+                IsAdmin = true,
+                Name = name,
+                Description = description
+            };
 
             RoleDao.Save(newAdminRole);
 
@@ -268,9 +280,11 @@ namespace Indigo.Security
         [Transaction]
         public Role AddRole(string name, string description, User oper)
         {
-            var newNormalRole = new Role();
-            newNormalRole.Name = name;
-            newNormalRole.Description = description;
+            var newNormalRole = new Role
+            {
+                Name = name,
+                Description = description
+            };
 
             RoleDao.Save(newNormalRole, oper);
 
@@ -321,17 +335,5 @@ namespace Indigo.Security
 
             RoleDao.Update(role);
         }
-
-        [Autowired]
-        public IEncryptor Encryptor { get; set; }
-
-        [Autowired]
-        public IUserDao UserDao { get; set; }
-
-        [Autowired]
-        public IRoleDao RoleDao { get; set; }
-
-        [Autowired]
-        public IFunctionDao FunctionDao { get; set; }
     }
 }

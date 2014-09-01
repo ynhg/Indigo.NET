@@ -1,15 +1,23 @@
-﻿using Indigo.Infrastructure.Search;
+﻿using System.Collections.Generic;
+using Indigo.Infrastructure.Search;
 using NHibernate;
 using Spring.Objects.Factory.Attributes;
-using System.Collections.Generic;
 
 namespace Indigo.Infrastructure.Data.Impl
 {
-    public abstract class GenericHibernateDao<T, ID> : IGenericDao<T, ID> where T : Entity<ID>
+    public abstract class GenericHibernateDao<T, TId> : IGenericDao<T, TId> where T : Entity<TId>
     {
-        public virtual ID Save(T entity)
+        protected ISession CurrentSession
         {
-            return (ID)CurrentSession.Save(entity);
+            get { return SessionFactory.GetCurrentSession(); }
+        }
+
+        [Autowired]
+        public ISessionFactory SessionFactory { get; set; }
+
+        public virtual TId Save(T entity)
+        {
+            return (TId) CurrentSession.Save(entity);
         }
 
         public virtual void Update(T entity)
@@ -22,17 +30,13 @@ namespace Indigo.Infrastructure.Data.Impl
             CurrentSession.Delete(entity);
         }
 
-        public virtual T GetById(ID id)
+        public virtual T GetById(TId id)
         {
-            if (id == null) return null;
-
             return CurrentSession.Get<T>(id);
         }
 
-        public virtual T GetReferenceById(ID id)
+        public virtual T GetReferenceById(TId id)
         {
-            if (id == null) return null;
-
             return CurrentSession.Load<T>(id);
         }
 
@@ -48,7 +52,7 @@ namespace Indigo.Infrastructure.Data.Impl
 
         protected Page<T> GetPage(IQueryOver<T, T> queryOver, int pageNumber, int pageSize)
         {
-            int firstResult = (pageNumber - 1) * pageSize;
+            int firstResult = (pageNumber - 1)*pageSize;
             int totalRecords = queryOver.RowCount();
             IList<T> records = queryOver.Skip(firstResult).Take(pageSize).List();
 
@@ -69,13 +73,5 @@ namespace Indigo.Infrastructure.Data.Impl
         {
             return CurrentSession.QueryOver<T>();
         }
-
-        protected ISession CurrentSession
-        {
-            get { return SessionFactory.GetCurrentSession(); }
-        }
-
-        [Autowired]
-        public ISessionFactory SessionFactory { get; set; }
     }
 }

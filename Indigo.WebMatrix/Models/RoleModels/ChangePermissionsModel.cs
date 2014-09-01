@@ -1,6 +1,6 @@
-﻿using Indigo.Modules;
+﻿using System.Collections.Generic;
+using Indigo.Modules;
 using Indigo.Security;
-using System.Collections.Generic;
 
 namespace Indigo.WebMatrix.Models.RoleModels
 {

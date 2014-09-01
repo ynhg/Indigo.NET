@@ -5,11 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Indigo - @Function.Title</title>
+    <link href="@Url.Content("~/static/plugins/jquery-ui/jquery-ui.min.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/static/plugins/bootstrap/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/static/plugins/font-awesome/css/font-awesome.min.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/static/plugins/icheck/skins/all.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/static/plugins/select2/select2.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/static/plugins/select2/select2-bootstrap.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/static/plugins/fancytree/skin-win8/ui.fancytree.min.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/static/plugins/messenger/css/messenger.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/static/plugins/messenger/css/messenger-theme-future.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/static/base/css/admin.css")" rel="stylesheet" type="text/css" />
@@ -20,7 +22,7 @@
       <script src="@Url.Content("~/static/plugins/respond/respond.min.js")"></script>
     <![endif]-->
 </head>
-<body>
+<body class="fuelux">
     <!-- header logo: style can be found in header.less -->
     <header class="header">
         <a href="@Url.Action("Index", "Home")" class="logo">
@@ -328,11 +330,13 @@
     </div><!-- ./wrapper -->
 
     <script src="@Url.Content("~/static/plugins/jquery/jquery.min.js")"></script>
+    <script src="@Url.Content("~/static/plugins/jquery-ui/jquery-ui.min.js")"></script>
     <script src="@Url.Content("~/static/plugins/jquery-validation/jquery.validate.min.js")"></script>
     <script src="@Url.Content("~/static/plugins/bootstrap/js/bootstrap.min.js")"></script>
     <script src="@Url.Content("~/static/plugins/icheck/icheck.min.js")"></script>
     <script src="@Url.Content("~/static/plugins/select2/select2.js")"></script>
     <script src="@Url.Content("~/static/plugins/select2/select2_locale_zh-CN.js")"></script>
+    <script src="@Url.Content("~/static/plugins/fancytree/jquery.fancytree-custom.min.js")"></script>
     <script src="@Url.Content("~/static/plugins/messenger/js/messenger.min.js")"></script>
     <script src="@Url.Content("~/static/plugins/messenger/js/messenger-theme-future.js")"></script>
     <script src="@Url.Content("~/static/base/base.js")"></script>

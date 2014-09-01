@@ -1,23 +1,22 @@
-﻿using Indigo.Infrastructure.Util;
-using Indigo.Modules;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using Indigo.Infrastructure.Support;
+using Indigo.Infrastructure.Util;
+using Indigo.Modules;
 
 namespace Indigo.Security
 {
     public class User : UserEntity<string>, IPrincipal
     {
-        private ICollection<Role> roles = new HashSet<Role>();
-        private ICollection<Function> functions = new HashSet<Function>();
-        private ISet<Function> allFunctions;
+        private ISet<Function> _allFunctions;
+        private ICollection<Function> _functions = new HashSet<Function>();
+        private ICollection<Role> _roles = new HashSet<Role>();
 
         public virtual string Name { get; protected internal set; }
         public virtual string Password { get; protected internal set; }
         public virtual string Email { get; protected internal set; }
-
-        public virtual IIdentity Identity { get; set; }
 
         public virtual bool IsOnline { get; protected internal set; }
         public virtual DateTime? LastSignInTime { get; protected internal set; }
@@ -25,24 +24,41 @@ namespace Indigo.Security
         public virtual TimeSpan TotalOnlineTime { get; protected internal set; }
         public virtual int TotalSignInCount { get; protected internal set; }
 
-        protected virtual ICollection<Role> Roles { get { return roles; } set { roles = value; } }
-        protected virtual ICollection<Function> Functions { get { return functions; } set { functions = value; } }
+        protected virtual ICollection<Role> Roles
+        {
+            get { return _roles; }
+            set { _roles = value; }
+        }
+
+        protected virtual ICollection<Function> Functions
+        {
+            get { return _functions; }
+            set { _functions = value; }
+        }
+
         protected virtual ISet<Function> AllFunctions
         {
             get
             {
-                if (allFunctions == null)
+                if (_allFunctions == null)
                 {
-                    allFunctions = new HashSet<Function>(Functions);
+                    _allFunctions = new HashSet<Function>(Functions);
 
                     foreach (Role role in Roles)
                     {
-                        allFunctions.UnionWith(role.GetFunctions());
+                        _allFunctions.UnionWith(role.GetFunctions());
                     }
                 }
 
-                return allFunctions;
+                return _allFunctions;
             }
+        }
+
+        public virtual IIdentity Identity { get; set; }
+
+        public virtual bool IsInRole(string role)
+        {
+            return Roles.Any(r => StringUtils.Equals(r.Name, role));
         }
 
         public virtual bool IsAdmin()
@@ -50,31 +66,16 @@ namespace Indigo.Security
             return Roles.Any(r => r.IsAdmin);
         }
 
-        public virtual bool IsInRole(string role)
-        {
-            return Roles.Any(r => StringUtils.Equals(r.Name, role));
-        }
-
         public virtual bool IsPermitted(Function function)
         {
             if (function == null || Functions.Contains(function)) return true;
 
-            foreach (var role in Roles)
-            {
-                if (role.IsPermitted(function)) return true;
-            }
-
-            return false;
+            return Roles.Any(role => role.IsPermitted(function));
         }
 
         public virtual bool Contains(Role role)
         {
-            foreach (Role r in Roles)
-            {
-                if (r.Contains(role)) return true;
-            }
-
-            return false;
+            return Roles.Any(r => r.Contains(role));
         }
 
         public virtual bool Contains(User user)
@@ -83,13 +84,7 @@ namespace Indigo.Security
 
             if (AllFunctions.Count <= user.AllFunctions.Count) return false;
 
-            foreach (Function function in user.AllFunctions)
-            {
-                if (!AllFunctions.Contains(function))
-                    return false;
-            }
-
-            return true;
+            return user.AllFunctions.All(function => AllFunctions.Contains(function));
         }
 
         public virtual ICollection<Role> GetRoles()
@@ -107,7 +102,7 @@ namespace Indigo.Security
             role.Users.Add(this);
             Roles.Add(role);
 
-            allFunctions = null;
+            _allFunctions = null;
         }
 
         protected internal virtual void RemoveRole(Role role)
@@ -115,7 +110,7 @@ namespace Indigo.Security
             role.Users.Remove(this);
             Roles.Remove(role);
 
-            allFunctions = null;
+            _allFunctions = null;
         }
 
         protected internal virtual void ClearRoles()
@@ -125,37 +120,37 @@ namespace Indigo.Security
                 RemoveRole(role);
             }
 
-            allFunctions = null;
+            _allFunctions = null;
         }
 
         protected internal virtual void AddFunction(Function function)
         {
             Functions.Add(function);
 
-            allFunctions = null;
+            _allFunctions = null;
         }
 
         protected internal virtual void RemoveFunction(Function function)
         {
             Functions.Remove(function);
 
-            allFunctions = null;
+            _allFunctions = null;
         }
 
         protected internal virtual void ClearFunctions()
         {
             Functions.Clear();
 
-            allFunctions = null;
+            _allFunctions = null;
         }
 
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
-            if (object.ReferenceEquals(this, obj)) return true;
-            if (!typeof(User).IsInstanceOfType(obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (!(obj is User)) return false;
 
-            var rhs = (User)obj;
+            var rhs = (User) obj;
             return new EqualsBuilder()
                 .Append(Name, rhs.Name)
                 .Append(Email, rhs.Email)
